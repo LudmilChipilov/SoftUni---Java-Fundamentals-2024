@@ -1,0 +1,34 @@
+import java.util.Scanner;
+
+public class _05_Login
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String username = scanner.nextLine();
+        int count = 0;
+        String input = scanner.nextLine();
+        while(true)
+        {
+            String result = "";
+            for (int i = input.length() - 1; i >= 0 ; i--)
+            {
+                result += input.charAt(i);
+            }
+            if(result.equals(username))
+            {
+                System.out.printf("User %s logged in.%n", username);
+                return;
+            }
+            count++;
+            if(count == 4)
+            {
+                System.out.printf("User %s blocked!", username);
+                return;
+            }
+            System.out.println("Incorrect password. Try again.");
+            input = scanner.nextLine();
+        }
+    }
+
+}
