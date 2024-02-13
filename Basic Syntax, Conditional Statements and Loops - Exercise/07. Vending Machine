@@ -1,0 +1,112 @@
+import java.util.Scanner;
+
+public class _07_Vending_Machine
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String start = scanner.nextLine();
+        double sum = 0;
+        //0.1, 0.2, 0.5, 1, and 2
+        while(!start.equals("Start"))
+        {
+            double coin = Double.parseDouble(start);
+            if(coin != 0.1 && coin != 0.2 && coin != 0.5 && coin != 1 && coin != 2)
+            {
+                System.out.printf("Cannot accept %.2f%n", coin);
+            }
+            else
+            {
+                sum += coin;
+            }
+            start = scanner.nextLine();
+        }
+        String end = scanner.nextLine();
+        while(!end.equals("End"))
+        {
+
+            String product = end;
+            boolean notEnough = false;
+
+            //"Nuts", "Water", "Crisps", "Soda", "Coke"
+             //2.0,     0.7,     1.5,     0.8,    1.0
+             if(product.equals("Nuts"))
+             {
+                 if(sum >= 2.0)
+                 {
+                     sum -= 2.0;
+
+                     System.out.printf("Purchased %s%n", product);
+                 }
+                 else
+                 {
+                     notEnough = true;
+                 }
+
+             }
+             else if(product.equals("Water"))
+             {
+                 if(sum >= 0.7)
+                 {
+
+                     sum -= 0.7;
+                     System.out.printf("Purchased %s%n", product);
+                 }
+                 else
+                 {
+                     notEnough = true;
+                 }
+
+             }
+             else if(product.equals("Crisps"))
+             {
+                 if(sum >= 1.5)
+                 {
+                     sum -= 1.5;
+
+                     System.out.printf("Purchased %s%n", product);
+                 }
+                 else
+                 {
+                     notEnough = true;
+                 }
+             }
+             else if(product.equals("Soda"))
+             {
+                 if(sum >= 0.8)
+                 {
+
+                     sum -= 0.8;
+                     System.out.printf("Purchased %s%n", product);
+                 }
+                 else
+                 {
+                     notEnough = true;
+                 }
+             }
+             else if(product.equals("Coke"))
+             {
+                 if(sum >= 1.0)
+                 {
+
+                     sum -= 1.0;
+                     System.out.printf("Purchased %s%n", product);
+                 }
+                 else
+                 {
+                     notEnough = true;
+                 }
+             }
+             else
+             {
+                 System.out.println("Invalid product");
+             }
+             if(notEnough)
+             {
+                 System.out.println("Sorry, not enough money");
+             }
+            end = scanner.nextLine();
+        }
+        System.out.printf("Change: %.2f", sum);
+    }
+}
