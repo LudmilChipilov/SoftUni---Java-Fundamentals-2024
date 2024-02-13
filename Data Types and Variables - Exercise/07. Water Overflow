@@ -1,0 +1,26 @@
+import java.util.Scanner;
+
+public class _07_Water_Overflow
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int capacity = 255;
+        int n = Integer.parseInt(scanner.nextLine());
+        int litters = 0;
+        for (int i = 1; i <= n; i++)
+        {
+            int currentVolume = Integer.parseInt(scanner.nextLine());
+
+            if(litters + currentVolume <= capacity)
+            {
+                litters += currentVolume;
+            }
+            else
+            {
+                System.out.println("Insufficient capacity!");
+            }
+        }
+        System.out.println(litters);
+    }
+}
