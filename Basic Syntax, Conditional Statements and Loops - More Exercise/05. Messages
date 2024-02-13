@@ -1,0 +1,124 @@
+import java.util.Scanner;
+
+public class _05_Messages
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int n = Integer.parseInt(scanner.nextLine());
+        String result = "";
+        for (int i = 1; i <= n; i++)
+        {
+            int number = Integer.parseInt(scanner.nextLine());
+            if(number == 2)
+            {
+                result += "a";
+            }
+            else if(number == 22)
+            {
+                result += "b";
+            }
+            else if(number == 222)
+            {
+                result += "c";
+            }
+            else if(number == 3)
+            {
+                result += "d";
+            }
+            else if(number == 33)
+            {
+                result += "e";
+            }
+            else if(number == 333)
+            {
+                result += "f";
+            }
+            else if(number == 4)
+            {
+                result += "g";
+            }
+            else if(number == 44)
+            {
+                result += "h";
+            }
+            else if(number == 444)
+            {
+                result += "i";
+            }
+            else if(number == 5)
+            {
+                result += "j";
+            }
+            else if(number == 55)
+            {
+                result += "k";
+            }
+            else if(number == 555)
+            {
+                result += "l";
+            }
+            else if(number == 6)
+            {
+                result += "m";
+            }
+            else if(number == 66)
+            {
+                result += "n";
+            }
+            else if(number == 666)
+            {
+                result += "o";
+            }
+            else if(number == 7)
+            {
+                result += "p";
+            }
+            else if(number == 77)
+            {
+                result += "q";
+            }
+            else if(number == 777)
+            {
+                result += "r";
+            }
+            else if(number == 7777)
+            {
+                result += "s";
+            }
+            else if(number == 8)
+            {
+                result += "t";
+            }
+            else if(number == 88)
+            {
+                result += "u";
+            }
+            else if(number == 888)
+            {
+                result += "v";
+            }
+            else if(number == 9)
+            {
+                result += "w";
+            }
+            else if(number == 99)
+            {
+                result += "x";
+            }
+            else if(number == 999)
+            {
+                result += "y";
+            }
+            else if(number == 9999)
+            {
+                result += "z";
+            }
+            else if(number == 0)
+            {
+                result += " ";
+            }
+        }
+        System.out.println(result);
+    }
+}
