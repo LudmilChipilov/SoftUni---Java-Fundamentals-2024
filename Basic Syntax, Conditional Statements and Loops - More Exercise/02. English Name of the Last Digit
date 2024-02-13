@@ -1,0 +1,53 @@
+import java.util.Scanner;
+
+public class _02_English_Name_Of_The_Last_Digit
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int number = Integer.parseInt(scanner.nextLine());
+        String lastDigit = EnglishNameOfLastDigit(number);
+        System.out.println(lastDigit);
+    }
+    public static String EnglishNameOfLastDigit(int number)
+    {
+        char last = (number + "").charAt((number + "").length() - 1);
+        if(last == '0')
+        {
+            return "zero";
+        }
+        else if(last == '1')
+        {
+            return "one";
+        }
+        else if(last == '2')
+        {
+            return "two";
+        }
+        else if(last == '3')
+        {
+            return "three";
+        }
+        else if(last == '4')
+        {
+            return "four";
+        }
+        else if(last == '5')
+        {
+            return "five";
+        }
+        else if(last == '6')
+        {
+            return "six";
+        }
+        else if(last == '7')
+        {
+            return "seven";
+        }
+        else if(last == '8')
+        {
+            return "eight";
+        }
+       return "nine";
+    }
+}
