@@ -1,0 +1,27 @@
+import java.util.Scanner;
+
+public class _09_Spice_Must_Flow
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int yield = Integer.parseInt(scanner.nextLine());
+        int totalAmount = 0;
+        int minYield = 100;
+        int countDays = 0;
+        while(yield >= minYield)
+        {
+
+            totalAmount += yield - 26;
+            countDays++;
+            yield -= 10;
+            if(yield < minYield)
+            {
+                totalAmount -= 26;
+            }
+
+        }
+        System.out.println(countDays);
+        System.out.println(totalAmount);
+    }
+}
