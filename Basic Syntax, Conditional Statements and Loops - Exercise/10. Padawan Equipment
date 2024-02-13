@@ -1,0 +1,27 @@
+import java.util.Scanner;
+
+public class _10_Padawan_Equipment
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        double budget = Double.parseDouble(scanner.nextLine());
+        int studentsNumber = Integer.parseInt(scanner.nextLine());
+        double priceLightsabersPer1 = Double.parseDouble(scanner.nextLine());
+        double priceRobesPer1 = Double.parseDouble(scanner.nextLine());
+        double priceBeltsPer1 = Double.parseDouble(scanner.nextLine());
+        int students = (int) Math.ceil(studentsNumber*1.1);
+        double totalPriceLightsabers = priceLightsabersPer1*students;
+        double totalPriceRobes = priceRobesPer1*studentsNumber;
+        double totalPriceBelts = priceBeltsPer1*(studentsNumber - studentsNumber/6);
+        double result = totalPriceLightsabers + totalPriceRobes + totalPriceBelts;
+        if(budget >= result)
+        {
+            System.out.printf("The money is enough - it would cost %.2flv.", result);
+        }
+        else
+        {
+            System.out.printf("George Lucas will need %.2flv more.", result - budget);
+        }
+    }
+}
