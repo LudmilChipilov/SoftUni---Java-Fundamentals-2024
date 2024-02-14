@@ -1,0 +1,82 @@
+import java.util.Scanner;
+
+public class _01_Data_Type_Finder
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        input = input.replace(" ", "");
+
+        while(!input.equals("END"))
+        {
+            int countInt = 0;
+            int countFloatingPoint = 0;
+            int countPoint = 0;
+            int countDigit = 0;
+            if(input.toLowerCase().equals("true") || input.toLowerCase().equals("false"))
+            {
+            System.out.printf("%s is boolean type%n", input);
+            input = scanner.nextLine();
+            continue;
+            }
+            if(input.length() == 1 && !Character.isDigit(input.charAt(0)))
+            {
+                System.out.printf("%s is character type%n", input);
+                input = scanner.nextLine();
+                continue;
+            }
+            if(input.length() == 1 && Character.isDigit(input.charAt(0)))
+            {
+                System.out.printf("%s is integer type%n", input);
+            }
+            if(input.length() > 1)
+            {
+                for (int i = 0;  i < input.length(); i++)
+                {
+                    char ch = input.charAt(i);
+                    if(Character.isDigit(ch) || ch == '-')
+                    {
+                        countInt++;
+                        if(Character.isDigit(ch))
+                        {
+                            countDigit++;
+                        }
+                    }
+                    if(Character.isDigit(ch) || ch == '-' || ch == '.')
+                    {
+                        if(ch == '.')
+                        {
+                            countPoint++;
+                        }
+                        if(Character.isDigit(ch))
+                        {
+                            countDigit++;
+                        }
+                        countFloatingPoint++;
+                    }
+
+                }
+                if(countInt == input.length() && countDigit > 0)
+                {
+                    System.out.printf("%s is integer type%n", input);
+                }
+                else if(countFloatingPoint == input.length())
+                {
+                    if(countPoint > 0 && countDigit > 0)
+                    {
+                        System.out.printf("%s is floating point type%n", input);
+                    }
+
+                }
+                else
+                {
+                    System.out.printf("%s is string type%n", input);
+                }
+
+            }
+            input = scanner.nextLine();
+
+        }
+    }
+}
