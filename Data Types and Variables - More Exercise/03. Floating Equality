@@ -1,0 +1,21 @@
+import java.util.Scanner;
+
+public class _03_Floating_Equality
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        double number1 = Double.parseDouble(scanner.nextLine());
+        double number2 = Double.parseDouble(scanner.nextLine());
+        double difference = Math.abs(number1 - number2);
+        double eps = 0.000001;
+        if(difference < eps)
+        {
+            System.out.println("True");
+        }
+        else
+        {
+            System.out.println("False");
+        }
+    }
+}
