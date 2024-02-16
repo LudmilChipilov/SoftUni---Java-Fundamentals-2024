@@ -1,0 +1,24 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class _01_Train
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int n = Integer.parseInt(scanner.nextLine());
+        int sumOfPeoples = 0;
+        int[] peoplesInTrain = new int[n];
+        for (int i = 0; i < n; i++)
+        {
+            int current = Integer.parseInt(scanner.nextLine());
+            peoplesInTrain[i] = current;
+            sumOfPeoples += current;
+            System.out.print(peoplesInTrain[i] + " ");
+        }
+        System.out.println();
+        System.out.println(sumOfPeoples);
+    }
+}
