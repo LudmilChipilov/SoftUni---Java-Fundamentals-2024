@@ -1,0 +1,25 @@
+import java.util.Objects;
+import java.util.Scanner;
+
+public class _02_Common_Elements
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String[] firstStr = scanner.nextLine().split(" ");
+        String[] secondStr = scanner.nextLine().split(" ");
+
+        for (int i = 0; i < secondStr.length; i++)
+        {
+            String second = secondStr[i];
+            for (int j = 0; j < firstStr.length; j++)
+            {
+                String first = firstStr[j];
+                if(second.equals(first))
+                {
+                    System.out.print(secondStr[i] + " ");
+                }
+            }
+        }
+    }
+}
