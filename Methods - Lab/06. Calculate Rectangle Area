@@ -1,0 +1,18 @@
+import java.util.Scanner;
+
+public class _06_Calculate_Rectangle_Area
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        double width = Double.parseDouble(scanner.nextLine());
+        double hight = Double.parseDouble(scanner.nextLine());
+        double area = getCalculateRectangleArea(width, hight);
+        System.out.println(Math.round(area));
+    }
+    private static double getCalculateRectangleArea(double width, double height)
+    {
+        double area = width*height;
+        return area;
+    }
+}
