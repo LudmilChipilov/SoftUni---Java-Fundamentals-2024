@@ -1,0 +1,51 @@
+import java.util.Scanner;
+
+public class _10_Multiply_Evens_by_Odds
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int number = Math.abs(Integer.parseInt(scanner.nextLine()));
+        int result = multiplyEvenByOdds(number);
+        System.out.println(result);
+    }
+    private static int multiplyEvenByOdds(int number)
+    {
+        String numberToString = String.valueOf(number);
+
+        int result = sumOfOddDigits(number)*sumOfEvenDigits(number);
+        return result;
+    }
+    private static int sumOfEvenDigits(int number)
+    {
+        int sumEven = 0;
+        String numToString = String.valueOf(number);
+            for(int i = 0; i < numToString.length(); i++)
+            {
+                char ch = numToString.charAt(i);
+                int currentDigit = Integer.parseInt((String.valueOf(ch)));
+                if(currentDigit % 2 == 0)
+                {
+                    sumEven += currentDigit;
+                }
+
+            }
+            return sumEven;
+    }
+    private static int sumOfOddDigits(int number)
+    {
+        int sumOdd = 0;
+        String numToString = String.valueOf(number);
+        for(int i = 0; i < numToString.length(); i++)
+        {
+            char ch = numToString.charAt(i);
+            int currentDigit = Integer.parseInt((String.valueOf(ch)));
+            if(currentDigit % 2 != 0)
+            {
+                sumOdd += currentDigit;
+            }
+
+        }
+        return sumOdd;
+    }
+}
