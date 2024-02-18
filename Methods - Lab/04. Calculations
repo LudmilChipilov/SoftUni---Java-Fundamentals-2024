@@ -1,0 +1,46 @@
+import java.util.Scanner;
+
+public class _04_Calculations
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String action = scanner.nextLine();
+        int a = Integer.parseInt(scanner.nextLine());
+        int b = Integer.parseInt(scanner.nextLine());
+        //"add", "multiply", "subtract", "divide
+        if(action.equals("add"))
+        {
+            printAdd(a, b);
+        }
+        else if(action.equals("multiply"))
+        {
+            printMultiply(a, b);
+        }
+        else if(action.equals("subtract"))
+        {
+            printSubtract(a, b);
+        }
+        else if(action.equals("divide"))
+        {
+            printDivide(a, b);
+        }
+
+    }
+    public static void printAdd(int a, int b)
+    {
+        System.out.println(a + b);
+    }
+    public static void printMultiply(int a, int b)
+    {
+        System.out.println(a*b);
+    }
+    public static void printSubtract(int a, int b)
+    {
+        System.out.println(a - b);
+    }
+    public static void printDivide(int a, int b)
+    {
+        System.out.println(a/b);
+    }
+}
