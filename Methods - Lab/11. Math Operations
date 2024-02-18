@@ -1,0 +1,37 @@
+import java.text.DecimalFormat;
+import java.util.Scanner;
+
+public class _11_Math_Operations
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int a = Integer.parseInt(scanner.nextLine());
+        char operator = scanner.nextLine().charAt(0);
+        int b = Integer.parseInt(scanner.nextLine());
+        System.out.println(new DecimalFormat("0.##").format(calculate(a, operator, b)));
+
+    }
+    public static double calculate(int a, char operator, int b)
+    {
+        //   / * + -
+        double result = 0;
+        if(operator == '/' && b != 0)
+        {
+            result = (a*1.0)/b;
+        }
+        else if(operator == '*')
+        {
+            result = a * b;
+        }
+        else if(operator == '+')
+        {
+            result = a + b;
+        }
+        else if(operator == '-')
+        {
+            result = a - b;
+        }
+        return result;
+    }
+}
