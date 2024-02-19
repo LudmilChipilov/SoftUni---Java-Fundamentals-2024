@@ -1,0 +1,51 @@
+import java.util.Scanner;
+
+public class _10_Top_Number
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int number = Integer.parseInt(scanner.nextLine());
+        printNumber(number);
+    }
+    public static boolean sumOfDigitsDivisibleBy8(int number)
+    {
+        String strNumber = String.valueOf(number);
+        int sumDigits = 0;
+        for(int i = 0; i < strNumber.length(); i++)
+        {
+            char ch = strNumber.charAt(i);
+            sumDigits += Integer.parseInt(String.valueOf(ch));
+        }
+        if(sumDigits % 8 == 0)
+        {
+            return true;
+        }
+        return false;
+    }
+    public static boolean atLeastOneOddDigit(int number)
+    {
+        String strNumber = String.valueOf(number);
+        for(int i = 0; i < strNumber.length(); i++)
+        {
+            char ch = strNumber.charAt(i);
+            int currentDigit = Integer.parseInt(String.valueOf(ch));
+            if(currentDigit % 2 != 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static void printNumber(int number)
+    {
+        for(int i = 1; i <= number; i++)
+        {
+            if(sumOfDigitsDivisibleBy8(i) && atLeastOneOddDigit(i))
+            {
+                System.out.println(i);
+            }
+        }
+
+    }
+}
