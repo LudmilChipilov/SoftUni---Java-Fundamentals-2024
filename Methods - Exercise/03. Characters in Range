@@ -1,0 +1,21 @@
+import java.util.Scanner;
+
+public class _03_Characters_in_Range
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        char first = scanner.nextLine().charAt(0);
+        char second = scanner.nextLine().charAt(0);
+        charactersInRange(first, second);
+    }
+    public static void charactersInRange(char first, char second)
+    {
+        int max = Math.max(first, second);
+        int min = Math.min(first, second);
+        for(int i = min + 1; i < max; i++)
+        {
+            System.out.printf("%c ", i);
+        }
+    }
+}
