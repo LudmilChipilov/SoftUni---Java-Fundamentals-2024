@@ -1,0 +1,35 @@
+import java.util.Scanner;
+
+public class _09_Palindrome_Integers
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+
+        String input = scanner.nextLine();
+
+        while(!input.equals("END"))
+        {
+            int current = Integer.parseInt(input);
+            System.out.println(palindromIntegers(current));
+            input = scanner.nextLine();
+        }
+
+    }
+    public static boolean palindromIntegers(int number)
+    {
+        String strNumber = String.valueOf(number);
+        String reversed = "";
+        for(int i = strNumber.length() - 1; i >= 0; i--)
+        {
+            reversed += strNumber.charAt(i);
+        }
+        int palindrome = Integer.parseInt(reversed);
+        if(number != palindrome)
+        {
+            return false;
+        }
+        return  true;
+    }
+
+}
