@@ -1,0 +1,27 @@
+import java.util.Scanner;
+
+public class _06_Middle_Characters
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        printMiddleCharacters(input);
+    }
+    public static void printMiddleCharacters(String input)
+    {
+        String middle = "";
+        if(input.length() % 2 != 0)
+        {
+            char ch = input.charAt(input.length()/2);
+            middle = String.valueOf(ch);
+        }
+        else
+        {
+            char ch1 = input.charAt(input.length()/2 - 1);
+            char ch2 = input.charAt(input.length()/2);
+            middle = String.valueOf(ch1) + String.valueOf(ch2);
+        }
+        System.out.println(middle);
+    }
+}
