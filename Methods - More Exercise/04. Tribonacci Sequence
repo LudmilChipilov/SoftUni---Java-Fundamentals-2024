@@ -1,0 +1,35 @@
+import java.util.Scanner;
+
+public class _04_Tribonacci_Sequence
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int num = Integer.parseInt(scanner.nextLine());
+        printTribonacciSequence(num);
+    }
+    public static void printTribonacciSequence(int num)
+    {
+        int[] tribonacciNumbers = new int[num];
+
+        for(int i = 0; i < num; i++)
+        {
+            if(i  == 0 || i  == 1)
+            {
+                tribonacciNumbers[i] = 1;
+                System.out.print(1 + " ");
+            }
+            if(i  == 2)
+            {
+                tribonacciNumbers[i] = 2;
+                System.out.print(2 + " ");
+            }
+            if(i  > 2)
+            {
+                int result = tribonacciNumbers[i - 3] + tribonacciNumbers[i - 2] + tribonacciNumbers[i - 1];
+                tribonacciNumbers[i] = result;
+                System.out.print(result + " ");
+            }
+        }
+    }
+}
