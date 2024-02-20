@@ -1,0 +1,31 @@
+import java.util.Scanner;
+
+public class _01_Data_Types
+{
+    public static void main(String[] args)
+    {
+       printDataTypes();
+
+    }
+    public static void printDataTypes()
+    {
+        Scanner scanner = new Scanner(System.in);
+        String type = scanner.nextLine();
+        if(type.equals("int"))
+        {
+            int number = Integer.parseInt(scanner.nextLine());
+            System.out.println(number*2);
+        }
+        else if(type.equals("real"))
+        {
+            double number = Double.parseDouble(scanner.nextLine());
+            System.out.printf("%.2f", number*1.5);
+        }
+        else if(type.equals("string"))
+        {
+            String str = scanner.nextLine();
+            String result = "$" + str + "$";
+            System.out.println(result);
+        }
+    }
+}
