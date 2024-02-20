@@ -1,0 +1,38 @@
+import java.util.Scanner;
+
+public class _05_Multiplication_Sign
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        double num1 = Double.parseDouble(scanner.nextLine());
+        double num2 = Double.parseDouble(scanner.nextLine());
+        double num3 = Double.parseDouble(scanner.nextLine());
+        if(num1 == 0 || num2 == 0 || num3 == 0)
+        {
+            System.out.println("zero");
+            return;
+        }
+        multiplicationSign(num1, num2, num3);
+    }
+    public static void multiplicationSign(double num1, double num2, double num3)
+    {
+        double[] numbers = {num1, num2, num3};
+        int countNegative = 0;
+        for(int i = 0; i < 3; i++)
+        {
+           if(numbers[i] < 0)
+           {
+               countNegative++;
+           }
+        }
+        if(countNegative == 1 || countNegative == 3)
+        {
+            System.out.println("negative");
+        }
+        else
+        {
+            System.out.println("positive");
+        }
+    }
+}
