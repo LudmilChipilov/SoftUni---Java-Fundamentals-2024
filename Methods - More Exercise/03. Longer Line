@@ -1,0 +1,47 @@
+import java.util.Scanner;
+
+public class _03_Longer_Line
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int x1 = Integer.parseInt(scanner.nextLine());
+        int y1 = Integer.parseInt(scanner.nextLine());
+        int x2 = Integer.parseInt(scanner.nextLine());
+        int y2 = Integer.parseInt(scanner.nextLine());
+        int x3 = Integer.parseInt(scanner.nextLine());
+        int y3 = Integer.parseInt(scanner.nextLine());
+        int x4 = Integer.parseInt(scanner.nextLine());
+        int y4 = Integer.parseInt(scanner.nextLine());
+        //printPointClosestToCenter(x1, y1, x2, y2);
+        //printPointClosestToCenter(x3, y3, x4, y4);
+        int firstAndSecondPointsLine = calculateLineLength(x1, y1, x2, y2);
+        int thirthAndFourthPointsLine = calculateLineLength(x3, y3, x4, y4);
+        if(firstAndSecondPointsLine >= thirthAndFourthPointsLine)
+        {
+            printPointClosestToCenter(x1, y1, x2, y2);
+        }
+        else
+        {
+            printPointClosestToCenter(x3, y3, x4, y4);
+        }
+
+    }
+    public static void printPointClosestToCenter(int x1, int y1, int x2, int y2)
+    {
+        if((x1*x1 + y1*y1) <= (x2*x2 + y2*y2))
+        {
+            System.out.printf("(%d, %d)(%d, %d)", x1, y1, x2, y2);
+        }
+        else
+        {
+            System.out.printf("(%d, %d)(%d, %d)", x2, y2, x1, y1);
+        }
+    }
+    public static int calculateLineLength(int x1, int y1, int x2, int y2)
+    {
+        int result = (x1 - x2)*(x1 - x2) + (y1-y2)*(y1 - y2);
+        return result;
+    }
+
+}
