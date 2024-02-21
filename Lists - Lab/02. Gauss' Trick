@@ -1,0 +1,36 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _02_Gauss_Trick
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Double> numbers = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Double::parseDouble).collect(Collectors.toList());
+
+        double[] arr = new double[(numbers.size() + 1)/2];
+        for(int i = 0; i < (numbers.size() + 1)/2; i++)
+        {
+            if(numbers.size() % 2 != 0 && i == numbers.size()/2)
+            {
+                arr[i] = numbers.get(i);
+                break;
+            }
+            else
+            {
+                arr[i] = numbers.get(i) + numbers.get(numbers.size() - 1 - i);
+            }
+        }
+        printArrayDouble(arr);
+    }
+    public static void printArrayDouble(double[] arr)
+    {
+        for(int i = 0; i < arr.length; i++)
+        {
+            System.out.printf("%.0f ", arr[i]);
+        }
+    }
+}
