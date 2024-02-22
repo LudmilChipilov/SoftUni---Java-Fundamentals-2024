@@ -1,0 +1,67 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _09_Pokemon_Don_t_Go
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> items = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        int sum = 0;
+        while(true)
+        {
+            if(items.size() == 0)
+            {
+                break;
+            }
+            int index = Integer.parseInt(scanner.nextLine());
+            int number = 0;
+            if(index < 0 )
+            {
+                int last = items.get(items.size() - 1);
+                number = items.get(0);
+                items.remove(0);
+                items.add(0, last);
+            }
+            else if(index  > items.size() - 1)
+            {
+                int first = items.get(0);
+                number = items.get(items.size() - 1);
+                items.remove(items.size() - 1);
+                items.add(first);
+            }
+            else
+            {
+                number = items.get(index);
+                items.remove(index);
+            }
+
+            sum += number;
+            items = increaseAllLowerDecreaseAllHigher(items, index, number);
+
+        }
+        System.out.println(sum);
+    }
+    public static List<Integer> increaseAllLowerDecreaseAllHigher(List<Integer> items, int index, int number)
+    {
+
+
+        for(int i = 0; i < items.size(); i++)
+        {
+            int num = items.get(i);
+            if(num <= number)
+            {
+                items.set(i, num + number);
+            }
+            else if(num > number)
+            {
+                items.set(i, num - number);
+            }
+        }
+        return items;
+    }
+
+}
