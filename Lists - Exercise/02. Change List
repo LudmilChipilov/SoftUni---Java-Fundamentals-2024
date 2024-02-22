@@ -1,0 +1,44 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _02_Change_List
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> numbers = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+
+        String command = scanner.nextLine();
+        while(!command.equals("end"))
+        {
+            String[] comArgs = command.split(" ");
+            String first = comArgs[0];
+            if(first.equals("Delete"))
+            {
+                int element = Integer.parseInt(comArgs[1]);
+                numbers.removeIf(n -> n == element);
+            }
+            else if(first.equals("Insert"))
+            {
+                int element = Integer.parseInt(comArgs[1]);
+                int index = Integer.parseInt(comArgs[2]);
+                if(index >= 0 && index <= numbers.size())
+                {
+                    numbers.add(index, element);
+                }
+            }
+            command = scanner.nextLine();
+        }
+        printFinalState(numbers);
+    }
+    public static void printFinalState(List<Integer> numbers)
+    {
+        for(int number : numbers)
+        {
+            System.out.print(number + " ");
+        }
+    }
+}
