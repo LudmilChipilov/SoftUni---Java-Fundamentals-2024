@@ -1,0 +1,111 @@
+import java.util.*;
+import java.util.stream.Collectors;
+import java.io.*;
+public class _04_List_Operations
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> numbers = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+
+        String command = scanner.nextLine();
+        while(!command.equals("End"))
+        {
+
+            List<String> lists = List.of(command.split(" "));
+
+            List<String> comArgs = new ArrayList<>();
+            comArgs = removeEmptyEntries(lists);
+
+
+            String first = comArgs.get(0);
+            if(first.equals("Add"))
+            {
+                int number = Integer.parseInt(comArgs.get(1));
+                numbers.add(number);
+            }
+            else if(first.equals("Insert"))
+            {
+                int number = Integer.parseInt(comArgs.get(1));
+                int index = Integer.parseInt(comArgs.get(2));
+                if(index >= 0 && index <= numbers.size())
+                {
+                    numbers.add(index, number);
+                }
+                else
+                {
+                    System.out.println("Invalid index");
+                }
+            }
+            else if(first.equals("Remove"))
+            {
+                int index = Integer.parseInt(comArgs.get(1));
+                if(index >= 0 && index < numbers.size())
+                {
+                    numbers.remove(index);
+                }
+                else
+                {
+                    System.out.println("Invalid index");
+                }
+            }
+            else if(first.equals("Shift"))
+            {
+                int count = Integer.parseInt(comArgs.get(2));
+                if(comArgs.get(1).equals("left"))
+                {
+                     shiftLeft(numbers, count);
+                }
+                else if(comArgs.get(1).equals("right"))
+                {
+                     shiftRight(numbers, count);
+                }
+            }
+            command = scanner.nextLine();
+        }
+        printFinalState(numbers);
+    }
+    public static void shiftLeft(List<Integer> numbers, int count)
+    {
+        int counter = 0;
+        while(counter < count)
+        {
+            int first = numbers.get(0);
+            numbers.add(first);
+            numbers.remove(0);
+            counter++;
+        }
+    }
+    public static void shiftRight(List<Integer> numbers, int count)
+    {
+        int counter = 0;
+        while(counter < count)
+        {
+            int last = numbers.get(numbers.size() - 1);
+            numbers.remove(numbers.size() - 1);
+            numbers.add(0, last);
+            counter++;
+        }
+    }
+    public static void printFinalState(List<Integer> numbers)
+    {
+        for(int number : numbers)
+        {
+            System.out.print(number + " ");
+        }
+    }
+    public static List<String> removeEmptyEntries(List<String> comArgs)
+    {
+        List<String> result = new ArrayList<>();
+        for(String str : comArgs)
+        {
+            if(str.equals(""))
+            {
+                continue;
+            }
+            result.add(str);
+        }
+        return result;
+    }
+}
