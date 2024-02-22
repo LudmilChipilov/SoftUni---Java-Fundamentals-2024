@@ -1,0 +1,35 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _07_Append_Arrays
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<String> items = Arrays.stream(scanner.nextLine().split("\\|"))
+                .collect(Collectors.toList());
+        Collections.reverse(items);
+        List<Integer> numbers = new ArrayList<>();
+        for(int i = 0; i < items.size(); i++)
+        {
+
+            List<String> current = List.of(items.get(i).split(" "));
+            for(int j = 0; j < current.size(); j++)
+            {
+                String str = current.get(j).replace(" ", "");
+                if(str.isEmpty())
+                {
+                    continue;
+                }
+                int num = Integer.parseInt(str);
+                numbers.add(num);
+            }
+
+        }
+        for(int num : numbers)
+        {
+            System.out.print(num + " ");
+        }
+    }
+
+}
