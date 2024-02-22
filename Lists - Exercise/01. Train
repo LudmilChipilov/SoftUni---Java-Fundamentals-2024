@@ -1,0 +1,55 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class _01_Train
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> wagons = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        int capacity = Integer.parseInt(scanner.nextLine());
+
+        String command = scanner.nextLine();
+        while(!command.equals("end"))
+        {
+            String[] comArgs = command.split(" ");
+            if(comArgs.length == 2)
+            {
+                int addLastWagon = Integer.parseInt(comArgs[1]);
+                wagons.add(addLastWagon);
+            }
+            else
+            {
+                int passengers = Integer.parseInt(comArgs[0]);
+                findFreePlacesInWagons(wagons, passengers, capacity);
+            }
+            command = scanner.nextLine();
+        }
+        printFinalState(wagons);
+    }
+    public static void findFreePlacesInWagons(List<Integer> wagons, int passengers, int capacity)
+    {
+        for(int i = 0; i < wagons.size(); i++)
+        {
+            int currentWagon = wagons.get(i);
+            if(capacity - currentWagon >= passengers)
+            {
+                wagons.set(i, currentWagon + passengers);
+                break;
+            }
+
+        }
+    }
+    public static void printFinalState(List<Integer> wagons)
+    {
+        for(int wagon : wagons)
+        {
+            System.out.print(wagon + " ");
+        }
+    }
+}
