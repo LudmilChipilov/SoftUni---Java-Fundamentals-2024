@@ -1,0 +1,68 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _04_Mixed_up_Lists
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> firstItems = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        List<Integer> secondItems = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        Collections.reverse(secondItems);
+
+        List<Integer> firstSecond = new ArrayList<>();
+        firstSecond = firstSecondElements(firstItems, secondItems);
+        int firstLimit = 0;
+        int secondLimit = 0;
+        if(firstItems.size() > secondItems.size())
+        {
+             firstLimit = firstItems.get(firstItems.size() - 2);
+             secondLimit = firstItems.get(firstItems.size() - 1);
+        }
+        if(firstItems.size() < secondItems.size())
+        {
+             firstLimit = secondItems.get(secondItems.size() - 2);
+             secondLimit = secondItems.get(secondItems.size() - 1);
+        }
+
+        int minLimit = Math.min(firstLimit, secondLimit);
+        int maxLimit = Math.max(firstLimit, secondLimit);
+        takeOrderAndPrintFinalState(firstSecond, minLimit, maxLimit);
+    }
+    public static List<Integer> firstSecondElements(List<Integer> firstItems, List<Integer> secondItems)
+    {
+        List<Integer> firstSecond = new ArrayList<>();
+        int minLength = Math.max(firstItems.size() , secondItems.size());
+        for(int i = 0; i < minLength; i++)
+        {
+            if(i <= firstItems.size() - 1)
+            {
+                firstSecond.add(firstItems.get(i));
+            }
+            if(i <= secondItems.size() - 1)
+            {
+                firstSecond.add(secondItems.get(i));
+            }
+        }
+        return firstSecond;
+    }
+    public static void takeOrderAndPrintFinalState(List<Integer> firstSecond, int minLimit, int maxLimit)
+    {
+        List<Integer> finalState = new ArrayList<>();
+        for(int i = 0; i < firstSecond.size(); i++)
+        {
+            int current = firstSecond.get(i);
+            if(current > minLimit && current < maxLimit)
+            {
+                finalState.add(current);
+            }
+        }
+        Collections.sort(finalState);
+        for(int num : finalState)
+        {
+            System.out.print(num + " ");
+        }
+    }
+}
