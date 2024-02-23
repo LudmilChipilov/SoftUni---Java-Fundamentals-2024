@@ -9,7 +9,7 @@ public class _05_Drum_Set
         double savings = Double.parseDouble(scanner.nextLine());
         List<Integer> items = Arrays.stream(scanner.nextLine().split(" "))
                 .map(Integer::parseInt).collect(Collectors.toList());
-        List<Integer> initialItems = savaInitialItems(items);
+        List<Integer> initialItems = saveInitialItems(items);
 
         String command = scanner.nextLine();
 
