@@ -1,0 +1,66 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _05_Drum_Set
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        double savings = Double.parseDouble(scanner.nextLine());
+        List<Integer> items = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        List<Integer> initialItems = savaInitialItems(items);
+
+        String command = scanner.nextLine();
+
+        while(!command.equals("Hit it again, Gabsy!"))
+        {
+
+
+            int power = Integer.parseInt(command);
+            for(int i = 0; i < items.size(); i++)
+            {
+                int currentItem = items.get(i);
+                if(currentItem > power)
+                {
+                    items.set(i, currentItem - power);
+                }
+                else
+                {
+                    if(initialItems.get(i) * 3 <= savings)
+                    {
+                        savings -= initialItems.get(i) * 3;
+                        items.set(i, initialItems.get(i));
+                    }
+                    else
+                    {
+                        items.remove(i);
+                        initialItems.remove(i);
+
+                        i--;
+                    }
+                }
+            }
+            command = scanner.nextLine();
+        }
+        printFinalState(items, savings);
+    }
+    public static List<Integer> savaInitialItems(List<Integer> items)
+    {
+        List<Integer> initialItems = new ArrayList<>();
+        for(int i = 0; i < items.size(); i++)
+        {
+            initialItems.add(items.get(i));
+        }
+        return initialItems;
+    }
+    public static void printFinalState(List<Integer> items, double savings)
+    {
+        for(int num : items)
+        {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+        System.out.printf("Gabsy has %.2flv.", savings);
+    }
+}
