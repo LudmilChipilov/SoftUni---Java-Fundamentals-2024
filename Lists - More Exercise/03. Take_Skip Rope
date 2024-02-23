@@ -1,0 +1,89 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _03_Take_Skip_Rope
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        List<Integer> allDigits = new ArrayList<>();
+        List<Integer> takeList = new ArrayList<>();
+        List<Integer> skipList = new ArrayList<>();
+        allDigits = digits(input);
+        for(int i = 0; i < allDigits.size(); i++)
+        {
+            if(i % 2 == 0)
+            {
+                takeList.add(allDigits.get(i));
+            }
+            else
+            {
+                skipList.add(allDigits.get(i));
+            }
+        }
+        String inputNonDigits = nonDigits(input);
+        takeAndPrintFinalInput(takeList, skipList, inputNonDigits);
+    }
+    public static List<Integer> digits(String input)
+    {
+        List<Integer> result = new ArrayList<>();
+
+        for(int i = 0; i < input.length(); i++)
+        {
+            char ch = input.charAt(i);
+            if(Character.isDigit(ch))
+            {
+                result.add(Integer.parseInt(String.valueOf(ch)));
+            }
+
+        }
+        return result;
+    }
+    public static String nonDigits(String input)
+    {
+        String result = "";
+        for(int i = 0; i < input.length(); i++)
+        {
+            char ch = input.charAt(i);
+            if(!Character.isDigit(ch))
+            {
+                result += String.valueOf(ch);
+            }
+
+        }
+        return result;
+    }
+    public static void takeAndPrintFinalInput(List<Integer> takeList, List<Integer> skipList, String inputNonDigits)
+    {
+        String result = "";
+        int counter = 0;
+        for(int i = 0; i < takeList.size(); i++)
+        {
+            int skip = skipList.get(i);
+            int take = takeList.get(i);
+            String currentSubstring = "";
+            if(i == takeList.size() - 1)
+            {
+                if(take + counter > inputNonDigits.length() - 1)
+                {
+                    currentSubstring = inputNonDigits.substring(counter);
+                }
+                else
+                {
+                    currentSubstring = inputNonDigits.substring(counter, take + counter);
+                }
+
+            }
+            else
+            {
+                 currentSubstring = inputNonDigits.substring(counter, take + counter);
+            }
+
+            result += currentSubstring;
+            counter += skip + take;
+        }
+        System.out.println(result);
+    }
+}
