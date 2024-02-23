@@ -1,0 +1,39 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _02_Car_Race
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> firstCar = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+
+
+        double sum1  = 0;
+        double sum2  = 0;
+        int secondIndex = firstCar.size() - 1;
+        for(int i = 0; i < firstCar.size()/2; i++)
+        {
+            sum1 += firstCar.get(i);
+            if(firstCar.get(i) == 0)
+            {
+                sum1 *= 0.8;
+            }
+            sum2 += firstCar.get(secondIndex - i);
+            if(firstCar.get(secondIndex - i) == 0)
+            {
+                sum2 *= 0.8;
+            }
+        }
+        if(sum1 < sum2)
+        {
+            System.out.printf("The winner is left with total time: %.1f", sum1);
+        }
+        else if(sum1 > sum2)
+        {
+            System.out.printf("The winner is right with total time: %.1f", sum2);
+        }
+
+    }
+}
