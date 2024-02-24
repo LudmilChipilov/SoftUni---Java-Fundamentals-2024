@@ -1,0 +1,41 @@
+import java.util.Scanner;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class _01_Computer_Store
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        double totalPrice = 0;
+        String command = scanner.nextLine();
+        while(!command.equals("special") && !command.equals("regular"))
+        {
+            double price = Double.parseDouble(command);
+            if(price <= 0)
+            {
+                System.out.println("Invalid price!");
+                command = scanner.nextLine();
+                continue;
+            }
+            totalPrice += price;
+            command = scanner.nextLine();
+        }
+        if(totalPrice == 0)
+        {
+            System.out.println("Invalid order!");
+            return;
+        }
+
+        System.out.println("Congratulations you've just bought a new computer!");
+        System.out.printf("Price without taxes: %.2f$%n", totalPrice);
+        System.out.printf("Taxes: %.2f$%n", totalPrice*0.2);
+        System.out.println("-----------");
+        totalPrice *= 1.2;
+        if(command.equals("special"))
+        {
+            totalPrice *= 0.9;
+        }
+        System.out.printf("Total price: %.2f$%n", totalPrice);
+    }
+}
