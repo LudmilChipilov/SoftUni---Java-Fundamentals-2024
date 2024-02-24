@@ -1,0 +1,60 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class _02_The_Lift
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int totalPeoples = Integer.parseInt(scanner.nextLine());
+        int liftCapacity = 4;
+        int totalPeopleInWagons = 0;
+        int[] peopleInEveryWagon = Arrays
+            .stream(scanner.nextLine().split(" "))
+            .mapToInt(e -> Integer.parseInt(e)).toArray();
+
+        for(int i = 0; i < peopleInEveryWagon.length; i++)
+        {
+            int currentLift = peopleInEveryWagon[i];
+            if(currentLift == liftCapacity)
+            {
+                totalPeopleInWagons += liftCapacity;
+                continue;
+            }
+            else
+            {
+                if(totalPeoples >= liftCapacity - currentLift)
+                {
+                    totalPeoples -= (liftCapacity - currentLift);
+                    peopleInEveryWagon[i] = liftCapacity;
+                    totalPeopleInWagons += liftCapacity;
+                }
+                else
+                {
+                    peopleInEveryWagon[i] += totalPeoples;
+                    totalPeopleInWagons += totalPeoples;
+                    totalPeoples = 0;
+                }
+            }
+        }
+        printFinalState(peopleInEveryWagon, totalPeoples, totalPeopleInWagons);
+    }
+    public static void printFinalState(int[] peopleInEveryWagon, int totalPeoples, int totalPeopleInWagons)
+    {
+        int sum = peopleInEveryWagon.length*4;
+        if(totalPeoples == 0 && totalPeopleInWagons < sum)
+        {
+            System.out.println("The lift has empty spots!");
+
+        }
+        if(totalPeoples > 0 && totalPeopleInWagons == sum)
+        {
+            System.out.printf("There isn't enough space! %d people in a queue!%n", totalPeoples);
+        }
+        for(int wagon : peopleInEveryWagon)
+        {
+            System.out.print(wagon + " ");
+        }
+    }
+
+}
