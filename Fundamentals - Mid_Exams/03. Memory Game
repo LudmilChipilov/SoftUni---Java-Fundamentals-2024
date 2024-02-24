@@ -1,0 +1,63 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _03_Memory_Game
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String values = scanner.nextLine();
+        List<String> items = Arrays.stream(values.split(" "))
+                .collect(Collectors.toList());
+        int counter = 0;
+        String input = scanner.nextLine();
+        while(!input.equals("end"))
+        {
+            counter++;
+            int[] indexies = Arrays
+                    .stream(input.split(" "))
+                    .mapToInt(e -> Integer.parseInt(e)).toArray();
+            int firstIndex = indexies[0];
+            int secondIndex = indexies[1];
+            int lowerIndex = Math.min(firstIndex, secondIndex);
+            int higherIndex = Math.max(firstIndex, secondIndex);
+            boolean isInvalid = firstIndex < 0 || secondIndex < 0
+                    || firstIndex > items.size() - 1 || secondIndex > items.size() - 1 || firstIndex == secondIndex;
+            if(isInvalid)
+            {
+                int middleLength = items.size() / 2;
+                String toAdd = "-" + String.valueOf(counter) + "a";
+                items.add(middleLength, toAdd);
+                items.add(middleLength, toAdd);
+                System.out.println("Invalid input! Adding additional elements to the board");
+            }
+            else
+            {
+                if(items.get(firstIndex).equals(items.get(secondIndex)))
+                {
+                    System.out.printf("Congrats! You have found matching elements - %s!%n", items.get(firstIndex));
+                    items.remove(lowerIndex);
+                    items.remove(higherIndex - 1);
+                    if(items.size() == 0)
+                    {
+                        System.out.printf("You have won in %d turns!", counter);
+                        return;
+                    }
+                }
+                else
+                {
+                    System.out.println("Try again!");
+                }
+            }
+            input = scanner.nextLine();
+        }
+       printFinalState(items);
+    }
+    public static void printFinalState(List<String> items)
+    {
+         System.out.println("Sorry you lose :(");
+        System.out.println(String.join(" ", items));
+    }
+}
