@@ -1,0 +1,35 @@
+import java.util.Scanner;
+
+public class _01_SoftUni_Reception
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int n1 = Integer.parseInt(scanner.nextLine());
+        int n2 = Integer.parseInt(scanner.nextLine());
+        int n3 = Integer.parseInt(scanner.nextLine());
+        int students = Integer.parseInt(scanner.nextLine());
+
+        int hours = 0;
+        int studentsCount = 0;
+
+
+        for (int i = 1; ; i ++)
+        {
+            if (studentsCount >= students)
+            {
+                break;
+            }
+            hours++;
+            if (i % 4 == 0)
+            {
+
+                continue;
+            }
+
+
+            studentsCount += (n1 + n2 + n3);
+        }
+       System.out.printf("Time needed: %dh.", hours);
+    }
+}
