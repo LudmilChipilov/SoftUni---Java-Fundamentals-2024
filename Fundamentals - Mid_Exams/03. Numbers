@@ -1,0 +1,55 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _03_Numbers
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> items = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        double average = returnAverageItems(items);
+        printTopFiveGreaterThanAverage(items, average);
+    }
+    public static Double returnAverageItems(List<Integer> items)
+    {
+        int sum = 0;
+        double average = 0;
+        for(int item : items)
+        {
+            sum += item;
+        }
+        average = sum*1.0 / items.size();
+        return average;
+    }
+    public static void printTopFiveGreaterThanAverage(List<Integer> items, double average)
+    {
+        List<Integer> greaterThanAverage = new ArrayList<>();
+        for(int item : items)
+        {
+            if(item > average)
+            {
+                greaterThanAverage.add(item);
+            }
+        }
+        if(greaterThanAverage.size() == 0)
+        {
+            System.out.println("No");
+
+        }
+        else
+        {
+            Collections.sort(greaterThanAverage);
+            Collections.reverse(greaterThanAverage);
+            for(int i = 0; i < greaterThanAverage.size(); i++)
+            {
+                if(i == 5)
+                {
+                    break;
+                }
+                System.out.print(greaterThanAverage.get(i) + " ");
+
+            }
+        }
+    }
+}
