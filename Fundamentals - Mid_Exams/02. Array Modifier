@@ -1,0 +1,72 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _02_Array_Modifier
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> items = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+
+        String command = scanner.nextLine();
+        while(!command.equals("end"))
+        {
+            String[] comArgs = command.split(" ");
+            String first = comArgs[0];
+            if(first.equals("swap"))
+            {
+                int firstIndex = Integer.parseInt(comArgs[1]);
+                int secondIndex = Integer.parseInt(comArgs[2]);
+                items = returnSwappedElements(items, firstIndex, secondIndex);
+            }
+            else if(first.equals("multiply"))
+            {
+                int firstIndex = Integer.parseInt(comArgs[1]);
+                int secondIndex = Integer.parseInt(comArgs[2]);
+                int firstElement = items.get(firstIndex);
+                int secondElement = items.get(secondIndex);
+                items.set(firstIndex, firstElement*secondElement);
+            }
+            else if(first.equals("decrease"))
+            {
+                items = decreaseAllItems(items);
+            }
+            command = scanner.nextLine();
+        }
+        printFinalState(items);
+
+    }
+    public static List<Integer> returnSwappedElements(List<Integer> items, int firstIndex, int secondIndex)
+    {
+        int firstElement = items.get(firstIndex);
+        int secondElement = items.get(secondIndex);
+        items.set(firstIndex, secondElement);
+        items.set(secondIndex, firstElement);
+        return items;
+    }
+    public static List<Integer>  decreaseAllItems(List<Integer> items)
+    {
+        for(int i = 0; i < items.size(); i++)
+        {
+            items.set(i, items.get(i) - 1);
+        }
+        return items;
+    }
+    public static void printFinalState(List<Integer> items)
+    {
+        for(int i = 0; i < items.size(); i++)
+        {
+            if(i == items.size() - 1)
+            {
+                System.out.print(items.get(i));
+            }
+            else
+            {
+                System.out.print(items.get(i) + ", ");
+            }
+        }
+    }
+}
