@@ -1,0 +1,61 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _02_Shopping_List
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<String> items = Arrays.stream(scanner.nextLine().split("!"))
+                .collect(Collectors.toList());
+
+        String command = scanner.nextLine();
+        while(!command.equals("Go Shopping!"))
+        {
+            String[] comArgs = command.split(" ");
+            String first = comArgs[0];
+            if(first.equals("Urgent"))
+            {
+                String item = comArgs[1];
+                if(!items.contains(item))
+                {
+                    items.add(0, item);
+                }
+            }
+            else if(first.equals("Unnecessary"))
+            {
+                String item = comArgs[1];
+                if(items.contains(item))
+                {
+                    items.remove(item);
+                }
+            }
+            else if(first.equals("Correct"))
+            {
+                String oldItem = comArgs[1];
+                String newItem = comArgs[2];
+                if(items.contains(oldItem))
+                {
+                    int index = items.indexOf(oldItem);
+                    items.set(index, newItem);
+                }
+            }
+            else if(first.equals("Rearrange"))
+            {
+                String item = comArgs[1];
+                if(items.contains(item))
+                {
+                    int index = items.indexOf(item);
+                    items.remove(index);
+                    items.add(item);
+                }
+            }
+            command = scanner.nextLine();
+        }
+        System.out.println(String.join(", ", items));
+    }
+
+}
