@@ -1,0 +1,82 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _03_Heart_Delivery
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> items = Arrays.stream(scanner.nextLine().split("@"))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        int lastPosition = 0;
+        String command = scanner.nextLine();
+        while(!command.equals("Love!"))
+        {
+            String[] comArgs = command.split(" ");
+            int length = Integer.parseInt(comArgs[1]);
+            int current = lastPosition + length;
+            if(current > items.size() - 1)
+            {
+                lastPosition = 0;
+                if(items.get(0) == 0)
+                {
+                    System.out.println("Place 0 already had Valentine's day.");
+                }
+                else
+                {
+                    items.set(0, items.get(0) - 2);
+                    {
+                        if(items.get(0) == 0)
+                        {
+                            System.out.println("Place 0 has Valentine's day.");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if(items.get(current) == 0)
+                {
+                    System.out.printf("Place %d already had Valentine's day.%n", current);
+                }
+                else
+                {
+                    items.set(current, items.get(current) - 2);
+                    {
+                        if(items.get(current) == 0)
+                        {
+                            System.out.printf("Place %d has Valentine's day.%n", current);
+                        }
+
+                    }
+                }
+                lastPosition = current;
+            }
+
+            command  = scanner.nextLine();
+        }
+       printFinalState(items, lastPosition);
+    }
+    public static void printFinalState(List<Integer> items, int lastPosition)
+    {
+        int counter = 0;
+        for(int num : items)
+        {
+            if(num != 0)
+            {
+                counter++;
+            }
+        }
+        System.out.printf("Cupid's last position was %d.%n", lastPosition);
+        if(counter == 0)
+        {
+            System.out.println("Mission was successful.");
+        }
+        else
+        {
+            System.out.printf("Cupid has failed %d places.", counter);
+        }
+    }
+}
