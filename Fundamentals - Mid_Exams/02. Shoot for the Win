@@ -1,0 +1,60 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _02_Shoot_for_the_Win
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> targets = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        int counter = 0;
+        String command = scanner.nextLine();
+        while(!command.equals("End"))
+        {
+            int index = Integer.parseInt(command);
+            if(index < 0 || index > targets.size() - 1)
+            {
+                command = scanner.nextLine();
+                continue;
+            }
+            targets = increaseOrDecreaseTargets(targets, index);
+            counter++;
+            command = scanner.nextLine();
+        }
+        printFinalState(targets, counter);
+
+    }
+    public static List<Integer> increaseOrDecreaseTargets(List<Integer> targets, int index)
+    {
+        int currentElement = targets.get(index);
+        targets.set(index, -1);
+        for(int i = 0; i < targets.size(); i++)
+        {
+            if(targets.get(i) == -1)
+            {
+                continue;
+            }
+            if(targets.get(i) > currentElement)
+            {
+                targets.set(i, targets.get(i) - currentElement);
+                continue;
+            }
+            if(targets.get(i) <= currentElement)
+            {
+                targets.set(i, targets.get(i) + currentElement);
+            }
+        }
+        return targets;
+    }
+    public static void printFinalState(List<Integer> targets, int counter)
+    {
+        System.out.printf("Shot targets: %d -> ", counter);
+        for(int target : targets)
+        {
+            System.out.print(target + " ");
+        }
+    }
+}
