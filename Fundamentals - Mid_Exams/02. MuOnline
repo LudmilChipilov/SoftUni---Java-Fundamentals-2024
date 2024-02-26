@@ -1,0 +1,60 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _02_MuOnline
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<String> rooms = Arrays.stream(scanner.nextLine().split("\\|"))
+                .collect(Collectors.toList());
+        int health = 100;
+        int bitcoins = 0;
+        for(int i = 0; i < rooms.size(); i++)
+        {
+            String[] currentRoom = rooms.get(i).split(" ");
+            String first = currentRoom[0];
+            int number = Integer.parseInt(currentRoom[1]);
+            if(first.equals("potion"))
+            {
+                 health += number;
+                 if(health > 100)
+                 {
+                     number -= (health - 100);
+                     health = 100;
+
+                 }
+                 System.out.printf("You healed for %d hp.%n", number);
+                 System.out.printf("Current health: %d hp.%n", health);
+            }
+            else if(first.equals("chest"))
+            {
+                bitcoins += number;
+                System.out.printf("You found %d bitcoins.%n", number);
+            }
+            else
+            {
+                health -= number;
+                if(health > 0)
+                {
+                    System.out.printf("You slayed %s.%n", first);
+                }
+                else
+                {
+                    System.out.printf("You died! Killed by %s.%n", first);
+                    System.out.printf("Best room: %d%n", i + 1);
+                    return;
+                }
+            }
+        }
+         printFinalState(bitcoins, health);
+    }
+    public static void printFinalState(int bitcoins, int health)
+    {
+        System.out.println("You've made it!");
+        System.out.printf("Bitcoins: %d%n", bitcoins);
+        System.out.printf("Health: %s%n", health);
+    }
+}
