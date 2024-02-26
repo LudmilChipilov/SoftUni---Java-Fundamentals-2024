@@ -1,0 +1,115 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _02_Treasure_Hunt
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+
+        List<String> items = Arrays.stream(scanner.nextLine().split("\\|"))
+                .collect(Collectors.toList());
+
+        String command = scanner.nextLine();
+        while(!command.equals("Yohoho!"))
+        {
+            String[] comArgs = command.split(" ");
+            String first = comArgs[0];
+            if(first.equals("Loot"))
+            {
+                items = lootItems(items, comArgs);
+            }
+            else if(first.equals("Drop"))
+            {
+                int index = Integer.parseInt(comArgs[1]);
+                if(index > -1 && index < items.size())
+                {
+                    String toAdd = items.get(index);
+                    items.remove(index);
+                    items.add(toAdd);
+                }
+            }
+            else if(first.equals("Steal"))
+            {
+                int count = Integer.parseInt(comArgs[1]);
+                {
+                    printStealedItems(items, count);
+                    items = stealedByCount(items, count);
+                }
+            }
+            command  = scanner.nextLine();
+        }
+        printFinalState(items);
+    }
+    public static List<String> lootItems(List<String> items, String[] comArgs)
+    {
+        for(int i = 1; i < comArgs.length; i++)
+        {
+            if(!items.contains(comArgs[i]))
+            {
+                items.add(0, comArgs[i]);
+            }
+        }
+        return items;
+    }
+    public static List<String> stealedByCount(List<String> items, int count)
+    {
+
+        if(items.size() > count)
+        {
+            List<String> newItems = new ArrayList<>();
+            for(int i = 0; i < items.size() - count; i++)
+            {
+                newItems.add(items.get(i));
+            }
+            items = newItems;
+        }
+        else
+        {
+            items.clear();
+        }
+
+        return items;
+    }
+    public static void printStealedItems(List<String> items, int count)
+    {
+        List<String> stealed = new ArrayList<>();
+        if(count >= items.size())
+        {
+            stealed = items;
+        }
+        else
+        {
+            for(int i = 0; i < items.size(); i++)
+            {
+                if(i >= items.size() - count)
+                {
+                    stealed.add(items.get(i));
+                }
+            }
+        }
+
+        System.out.println(String.join(", ", stealed));
+    }
+    public static void printFinalState(List<String> items)
+    {
+        if(items.size() == 0)
+        {
+            System.out.println("Failed treasure hunt.");
+        }
+        else
+        {
+            int itemsLength = 0;
+            for(int i = 0; i < items.size(); i++)
+            {
+                itemsLength += items.get(i).length();
+            }
+            double average = itemsLength*1.0/items.size();
+            System.out.printf("Average treasure gain: %.2f pirate credits.", average);
+        }
+    }
+
+}
