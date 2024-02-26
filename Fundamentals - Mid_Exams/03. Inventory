@@ -1,0 +1,69 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _03_Inventory
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<String> items = Arrays.stream(scanner.nextLine().split(", "))
+                .collect(Collectors.toList());
+
+        String command = scanner.nextLine();
+        while(!command.equals("Craft!"))
+        {
+            String[] comArgs = command.split(" - ");
+            String first = comArgs[0];
+            if(first.equals("Collect"))
+            {
+                String item = comArgs[1];
+                if(!items.contains(item))
+                {
+                    items.add(item);
+                }
+            }
+            else if(first.equals("Drop"))
+            {
+                String item = comArgs[1];
+                if(items.contains(item))
+                {
+                    items.remove(item);
+                }
+            }
+            else if(first.equals("Combine Items"))
+            {
+                items = combineItems(items, comArgs);
+            }
+            else if(first.equals("Renew"))
+            {
+                items = renewItems(items, comArgs);
+            }
+            command = scanner.nextLine();
+        }
+        System.out.println(String.join(", ", items));
+    }
+    public static List<String> combineItems(List<String> items,  String[] comArgs)
+    {
+        String[] str = comArgs[1].split(":");
+        String old_item = str[0];
+        String new_item = str[1];
+        if(items.contains(old_item))
+        {
+            int index = items.indexOf(old_item);
+            items.add(index + 1, new_item);
+        }
+        return items;
+    }
+    public static List<String> renewItems(List<String> items,  String[] comArgs)
+    {
+        String item = comArgs[1];
+        if(items.contains(item))
+        {
+            items.remove(item);
+            items.add(item);
+        }
+        return items;
+    }
+}
