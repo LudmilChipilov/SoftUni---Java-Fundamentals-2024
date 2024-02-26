@@ -1,0 +1,114 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _03_Man_O_War
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> piratesShip = Arrays.stream(scanner.nextLine().split(">"))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        List<Integer> warship = Arrays.stream(scanner.nextLine().split(">"))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        int maxHealth = Integer.parseInt(scanner.nextLine());
+        boolean youLost = false;
+        String command = scanner.nextLine();
+        while(!command.equals("Retire"))
+        {
+            String[] comArgs = command.split(" ");
+            String first = comArgs[0];
+            if(first.equals("Fire"))
+            {
+                int index = Integer.parseInt(comArgs[1]);
+                int damage = Integer.parseInt(comArgs[2]);
+                if(index >= 0 && index < warship.size())
+                {
+                    if(warship.get(index) - damage <= 0)
+                    {
+                        System.out.println("You won! The enemy ship has sunken.");
+                                return;
+                    }
+                    else
+                    {
+                        warship.set(index, warship.get(index) - damage);
+                    }
+                }
+            }
+            else if(first.equals("Defend"))
+            {
+                int startIndex = Integer.parseInt(comArgs[1]);
+                int endIndex = Integer.parseInt(comArgs[2]);
+                int damage = Integer.parseInt(comArgs[3]);
+                if(startIndex < endIndex && startIndex >= 0 && endIndex < piratesShip.size())
+                {
+                    for(int i = startIndex; i <= endIndex; i++)
+                    {
+
+                        piratesShip.set(i, piratesShip.get(i) - damage);
+                        if(piratesShip.get(i) <= 0)
+                        {
+                            System.out.println("You lost! The pirate ship has sunken.");
+                            return;
+                        }
+                    }
+
+                }
+
+            }
+            else if(first.equals("Repair"))
+            {
+                int index = Integer.parseInt(comArgs[1]);
+                int health = Integer.parseInt(comArgs[2]);
+                if(index >= 0 && index < piratesShip.size())
+                {
+                    piratesShip.set(index, piratesShip.get(index) + health);
+                    {
+                        if(piratesShip.get(index) > maxHealth)
+                        {
+                            piratesShip.set(index, maxHealth);
+                        }
+                    }
+                }
+
+            }
+            else if(first.equals("Status"))
+            {
+                checkPiratesHealthStatus(piratesShip, maxHealth);
+            }
+            command = scanner.nextLine();
+        }
+       printFinalState(piratesShip, warship);
+    }
+
+
+    public static void checkPiratesHealthStatus(List<Integer> piratesShip, int maxHealth)
+    {
+        double neededHealth = 0.2*maxHealth;
+        int count = 0;
+        for(int i = 0; i < piratesShip.size(); i++)
+        {
+            if(piratesShip.get(i) < neededHealth)
+            {
+                count++;
+            }
+        }
+        System.out.printf("%d sections need repair.%n", count);
+    }
+    public static void printFinalState(List<Integer> piratesShip, List<Integer> warship)
+    {
+        int piratesShipSum = 0;
+        int warShipSum = 0;
+        for(int num : piratesShip)
+        {
+            piratesShipSum += num;
+        }
+        for(int num : warship)
+        {
+            warShipSum += num;
+        }
+        System.out.printf("Pirate ship status: %d%n", piratesShipSum);
+        System.out.printf("Warship status: %d%n", warShipSum);
+    }
+}
