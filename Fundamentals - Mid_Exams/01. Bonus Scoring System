@@ -1,0 +1,26 @@
+import java.util.Scanner;
+
+public class _01_Bonus_Scoring_System
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int numOfStud = Integer.parseInt(scanner.nextLine());
+        int numOfLect = Integer.parseInt(scanner.nextLine());
+        int bonus = Integer.parseInt(scanner.nextLine());
+        double maxBonus = -Double.MAX_VALUE;
+        int maxLectures = 0;
+        for(int i = 1; i <= numOfStud; i++)
+        {
+            double attendances = Double.parseDouble(scanner.nextLine());
+            double currentBonus = (attendances/(numOfLect)*1.0*(5.0 + bonus));
+            if(currentBonus > maxBonus)
+            {
+                maxBonus = currentBonus;
+                maxLectures = (int)Math.round(attendances);
+            }
+        }
+        System.out.printf("Max Bonus: %d.%n", (int)Math.round(maxBonus));
+        System.out.printf("The student has attended %d lectures.%n", maxLectures);
+    }
+}
