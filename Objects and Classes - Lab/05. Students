@@ -1,0 +1,96 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _05_Students
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Student> students = new ArrayList<>();
+        String command = scanner.nextLine();
+        while(!command.equals("end"))
+        {
+            String[] comArgs = command.split(" ");
+            String firstName = comArgs[0];
+            String lastName = comArgs[1];
+            int age = Integer.parseInt(comArgs[2]);
+            String homeTown = comArgs[3];
+            Student student = new Student(firstName, lastName, age, homeTown);
+            students.add(student);
+            command = scanner.nextLine();
+        }
+        String town = scanner.nextLine();
+        printFinalState(students, town);
+    }
+    public static void printFinalState(List<Student> students, String town)
+    {
+        for(Student student : students)
+        {
+            if(student.getHomeTown().equals(town))
+            {
+                System.out.printf("%s %s is %d years old%n",
+                        student.getFirstName(),
+                        student.getLastName(),
+                        student.getAge());
+            }
+        }
+    }
+}
+class Student
+{
+
+    private String firstName;
+    private String lastName;
+    private int age;
+    private String homeTown;
+
+    public Student(String firstName, String lastName, int age, String homeTown)
+    {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.homeTown = homeTown;
+    }
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName)
+    {
+        this.firstName = firstName;
+    }
+
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
+
+    public int getAge()
+    {
+        return age;
+    }
+
+    public void setAge(int age)
+    {
+        this.age = age;
+    }
+
+    public String getHomeTown()
+    {
+        return homeTown;
+    }
+
+    public void setHomeTown(String homeTown)
+    {
+        this.homeTown = homeTown;
+    }
+}
