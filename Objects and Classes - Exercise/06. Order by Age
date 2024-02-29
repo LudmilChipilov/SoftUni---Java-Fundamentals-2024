@@ -1,0 +1,72 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
+
+public class _06_Order_by_Age
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Person1> persons = new ArrayList<>();
+        String command = scanner.nextLine();
+        while(!command.equals("End"))
+        {
+            String[] comArgs = command.split(" ");
+            String name = comArgs[0];
+            String id = comArgs[1];
+            int age  = Integer.parseInt(comArgs[2]);
+            Person1 person = new Person1(name, id, age);
+            persons.add(person);
+            command = scanner.nextLine();
+        }
+        persons.sort(Comparator.comparing(Person1::getAge, Comparator.naturalOrder()));
+        printFinalState(persons);
+    }
+    public static void printFinalState(List<Person1> persons)
+    {
+        for(Person1 person : persons)
+        {
+            System.out.printf("%s with ID: %s is %d years old.%n",
+                    person.getName(),
+                    person.getID(),
+                    person.getAge());
+        }
+    }
+}
+class Person1
+{
+     private String name;
+     private String id;
+     private int age;
+
+    Person1(String name, String id, int age) {
+        this.name = name;
+        this.id = id;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getID() {
+        return id;
+    }
+
+    public void setID(String ID) {
+        this.id = id;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
