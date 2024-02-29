@@ -1,0 +1,140 @@
+import java.util.*;
+
+public class _05_Vehicle_Catalogue
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        String command = scanner.nextLine();
+        while(!command.equals("End"))
+        {
+            String[] comArgs = command.split(" ");
+            String type = comArgs[0];
+            type = vehicleTypePascalCase(type);
+            String model= comArgs[1];
+            String color = comArgs[2];
+            int horsepower = Integer.parseInt(comArgs[3]);
+            Vehicle vehicle = new Vehicle(type, model, color, horsepower);
+            vehicles.add(vehicle);
+            command = scanner.nextLine();
+
+        }
+
+        String input = scanner.nextLine();
+        while(!input.equals("Close the Catalogue"))
+        {
+            String model = input;
+            printBeforeCatalogue(vehicles, model);
+            input = scanner.nextLine();
+        }
+        printFinalState(vehicles);
+    }
+    public static String vehicleTypePascalCase(String type)
+    {
+        if(type.equals("car"))
+        {
+            type = "Car";
+        }
+        else if(type.equals("truck"))
+        {
+            type = "Truck";
+        }
+        return type;
+    }
+    public static void printBeforeCatalogue(List<Vehicle> vehicles, String model)
+    {
+        for(Vehicle vehicle : vehicles)
+        {
+            if(vehicle.getModel().equals(model))
+            {
+                System.out.printf("Type: %s%n", vehicle.getType());
+                System.out.printf("Model: %s%n", vehicle.getModel());
+                System.out.printf("Color: %s%n", vehicle.getColor());
+                System.out.printf("Horsepower: %d%n", vehicle.getHorsepower());
+            }
+
+        }
+    }
+    public static void printFinalState(List<Vehicle> vehicles)
+    {
+        double carSumHorsepower = 0;
+        int countCar = 0;
+        double truckSumHorsepower = 0;
+        int countTruck = 0;
+        for(Vehicle vehicle : vehicles)
+        {
+            if(vehicle.getType().equals("Car"))
+            {
+                carSumHorsepower += vehicle.getHorsepower();
+                countCar++;
+            }
+            else if(vehicle.getType().equals("Truck"))
+            {
+                truckSumHorsepower += vehicle.getHorsepower();
+                countTruck++;
+            }
+        }
+        double averageCar = carSumHorsepower/countCar;
+        double averadeTruck = truckSumHorsepower / countTruck;
+        if(countCar == 0)
+        {
+            averageCar = 0.00;
+        }
+        if(countTruck == 0)
+        {
+            averadeTruck = 0.00;
+        }
+        System.out.printf("Cars have average horsepower of: %.2f.%n", averageCar);
+        System.out.printf("Trucks have average horsepower of: %.2f.%n", averadeTruck);
+
+    }
+}
+class Vehicle
+{
+      private String type;
+      private String model;
+      private String color;
+      private int horsepower;
+
+    Vehicle(String type, String model, String color, int horsepower)
+    {
+        this.type = type;
+        this.model = model;
+        this.color = color;
+        this.horsepower = horsepower;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public int getHorsepower() {
+        return horsepower;
+    }
+
+    public void setHorsepower(int horsepower) {
+        this.horsepower = horsepower;
+    }
+}
