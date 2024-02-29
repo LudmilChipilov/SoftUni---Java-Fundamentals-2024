@@ -1,0 +1,60 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _03_Opinion_Poll
+{
+    public static void main(String[] args)
+    {
+        List<Person> persons = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        int n = Integer.parseInt(scanner.nextLine());
+
+        for(int i = 0; i < n; i++)
+        {
+            String[] comArgs = scanner.nextLine().split(" ");
+            String name = comArgs[0];
+            int age = Integer.parseInt(comArgs[1]);
+            Person person = new Person(name, age);
+            persons.add(person);
+        }
+        printFinalState(persons);
+    }
+    public static void printFinalState(List<Person> persons)
+    {
+        for(Person person : persons)
+        {
+            if(person.getAge() > 30)
+            {
+                System.out.printf("%s - %d%n", person.getName(), person.getAge());
+            }
+        }
+    }
+}
+class Person
+{
+    private String name;
+    private int age;
+
+    Person(String name, int age)
+    {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
