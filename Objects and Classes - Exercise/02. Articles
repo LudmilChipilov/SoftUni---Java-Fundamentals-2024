@@ -1,0 +1,123 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _02_Articles
+{
+    public static void main(String[] args)
+    {
+        List<Article> articles = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+
+        List<String> items = Arrays.stream(scanner.nextLine().split(", "))
+                .collect(Collectors.toList());
+        String title = items.get(0);
+        String content = items.get(1);
+        String author = items.get(2);
+        Article article = new Article(title, content, author);
+        articles.add(article);
+        int n = Integer.parseInt(scanner.nextLine());
+        for(int i = 0; i < n; i++)
+        {
+            String[] comArgs = scanner.nextLine().split(": ");
+            String first = comArgs[0];
+            if(first.equals("Edit"))
+            {
+                String newContent = comArgs[1];
+                articles = changeContent(articles, newContent);
+            }
+            else if(first.equals("ChangeAuthor"))
+            {
+                String newAuthor = comArgs[1];
+                articles = changeAuthor(articles, newAuthor);
+            }
+            else if(first.equals("Rename"))
+            {
+                String newTitle = comArgs[1];
+                articles = changeTitle(articles, newTitle);
+            }
+
+        }
+        toString(articles);
+    }
+    public static List<Article> changeContent(List<Article> articles, String newContent)
+    {
+        for(int i = 0; i < articles.size(); i++)
+        {
+            articles.get(i).setContent(newContent);
+        }
+        return articles;
+    }
+    public static List<Article> changeAuthor(List<Article> articles, String newAuthor)
+    {
+        for(int i = 0; i < articles.size(); i++)
+        {
+            articles.get(i).setAuthor(newAuthor);
+        }
+        return articles;
+    }
+    public static List<Article> changeTitle(List<Article> articles, String newTitle)
+    {
+        for(int i = 0; i < articles.size(); i++)
+        {
+            articles.get(i).setTitle(newTitle);
+        }
+        return articles;
+    }
+    public static void toString(List<Article> articles)
+    {
+        String title = "";
+        String content = "";
+        String author = "";
+        for(Article article : articles)
+        {
+            title = article.getTitle();
+            content = article.getContent();
+            author = article.getAuthor();
+        }
+
+        System.out.printf("%s - %s: %s", title, content, author);
+    }
+
+
+
+}
+class Article
+{
+    private String title;
+    private String content;
+    private String author;
+
+    Article(String title, String content, String author)
+    {
+        this.title = title;
+        this.content = content;
+        this.author = author;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+}
