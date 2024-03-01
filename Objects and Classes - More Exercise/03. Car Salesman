@@ -1,0 +1,238 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _03_Car_Salesman
+{
+    public static void main(String[] args)
+    {
+        List<Engine> engines = new ArrayList<>();
+        List<Car_> cars = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        int nEngines = Integer.parseInt(scanner.nextLine());
+        for(int i = 0; i < nEngines; i++)
+        {
+            String[] engStrings = scanner.nextLine().split("\\s+");
+            Engine engine = null;
+            if(engStrings.length == 4)
+            {
+                // model, power, displacement, and efficiency
+                String model = engStrings[0];
+                String power = engStrings[1];
+                String displacement = engStrings[2];
+                String efficiency = engStrings[3];
+                engine = new Engine(model, power, displacement, efficiency);
+            }
+            else if(engStrings.length == 2)
+            {
+                String model = engStrings[0];
+                String power = engStrings[1];
+                String displacement = "n/a";
+                String efficiency = "n/a";
+                engine = new Engine(model, power, displacement, efficiency);
+            }
+            else if(engStrings.length > 2)
+            {
+                String model = engStrings[0];
+                String power = engStrings[1];
+                String displacement = "";
+                String efficiency = "";
+                if(checkEngineDisplacementOrEfficiency(engStrings))
+                {
+                     displacement = "n/a";
+                     efficiency = engStrings[2];
+                }
+                else
+                {
+                     displacement = engStrings[2];
+                     efficiency = "n/a";
+                }
+                engine = new Engine(model, power, displacement, efficiency);
+            }
+            engines.add(engine);
+        }
+        int nCars = Integer.parseInt(scanner.nextLine());
+        for(int i = 0; i < nCars; i++)
+        {
+            String[] carStrings = scanner.nextLine().split("\\s+");
+            Car_ car = null;
+            if(carStrings.length == 4)
+            {
+
+                String model = carStrings[0];
+                String engine = carStrings[1];
+                String weight = carStrings[2];
+                String color = carStrings[3];
+                car = new Car_(model, engine, weight, color);
+            }
+            else if(carStrings.length == 2)
+            {
+                String model = carStrings[0];
+                String engine = carStrings[1];
+                String weight = "n/a";
+                String color = "n/a";
+                car = new Car_(model, engine, weight, color);
+            }
+            else if(carStrings.length > 2)
+            {
+                String model = carStrings[0];
+                String engine = carStrings[1];
+                String weight = "";
+                String color = "";
+                if(checkCarWeightOrColor(carStrings))
+                {
+                    weight = "n/a";
+                    color = carStrings[2];
+                }
+                else
+                {
+                    weight = carStrings[2];
+                    color = "n/a";
+                }
+                car = new Car_(model, engine, weight, color);
+            }
+            cars.add(car);
+        }
+        printFinalState(engines, cars);
+    }
+    public static boolean checkEngineDisplacementOrEfficiency( String[] engStrings)
+    {
+        String current = engStrings[2];
+
+        for(int i = 0; i < current.length(); i++)
+        {
+            if(!Character.isDigit(current.charAt(i)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean checkCarWeightOrColor( String[] carStrings)
+    {
+        String current = carStrings[2];
+
+        for(int i = 0; i < current.length(); i++)
+        {
+            if(!Character.isDigit(current.charAt(i)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+     public static void printFinalState(List<Engine> engines,  List<Car_> cars)
+     {
+         for (Car_ car : cars)
+         {
+             System.out.printf("%s:%n", car.getModel());
+             for (Engine engine : engines)
+             {
+                 if(engine.getModel().equals(car.getEngine()))
+                 {
+                     System.out.printf("  %s:%n", engine.getModel());
+                     System.out.printf("    Power: %s%n", engine.getPower());
+                     System.out.printf("    Displacement: %s%n", engine.getDisplacement());
+                     System.out.printf("    Efficiency: %s%n", engine.getEfficiency());
+                     System.out.printf("  Weight: %s%n", car.getWeight());
+                     System.out.printf("  Color: %s%n", car.getColor());
+                 }
+
+             }
+         }
+     }
+}
+class Car_
+{
+
+    private String model;
+    private String engine;
+    private String weight;
+    private String color;
+
+    Car_(String model, String engine, String weight, String color) {
+        this.model = model;
+        this.engine = engine;
+        this.weight = weight;
+        this.color = color;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+}
+class Engine
+{
+    // model, power, displacement, and efficiency
+    private String model;
+    private String power;
+    private String displacement;
+    private String efficiency;
+
+    Engine(String model, String power, String displacement, String efficiency) {
+        this.model = model;
+        this.power = power;
+        this.displacement = displacement;
+        this.efficiency = efficiency;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getPower() {
+        return power;
+    }
+
+    public void setPower(String power) {
+        this.power = power;
+    }
+
+    public String getDisplacement() {
+        return displacement;
+    }
+
+    public void setDisplacement(String displacement) {
+        this.displacement = displacement;
+    }
+
+    public String getEfficiency() {
+        return efficiency;
+    }
+
+    public void setEfficiency(String efficiency) {
+        this.efficiency = efficiency;
+    }
+}
