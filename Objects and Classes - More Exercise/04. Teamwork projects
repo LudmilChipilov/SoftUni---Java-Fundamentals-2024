@@ -1,0 +1,202 @@
+import java.util.*;
+
+public class _04_Teamwork_projects
+{
+    public static void main(String[] args)
+    {
+        List<Team> teams = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        int countTeams = Integer.parseInt(scanner.nextLine());
+
+        for(int i = 0; i < countTeams; i++)
+        {
+            String[] items = scanner.nextLine().split("-");
+            String creator = items[0];
+            String teamName = items[1];
+            List<String> members = new ArrayList<>();
+            int counter = 0;
+            Team team = new Team(teamName, creator, members, counter);
+
+            if(teams.size() == 0)
+            {
+                teams.add(team);
+                System.out.printf("Team %s has been created by %s!%n", teamName, creator);
+                continue;
+            }
+            else
+            {
+                boolean canNotCreate = false;
+                canNotCreate = createdTeamOrCreateOtherTeam(teams, creator, teamName);
+                if(canNotCreate)
+                {
+                    continue;
+                }
+
+                teams.add(team);
+                System.out.printf("Team %s has been created by %s!%n", teamName, creator);
+            }
+        }
+        String command = scanner.nextLine();
+        while(!command.equals("end of assignment"))
+        {
+            String[] comArgs = command.split("->");
+            String user = comArgs[0];
+            String team = comArgs[1];
+            boolean existingTeam = existingTeam(teams, team);
+            boolean memberOtherTeam = containsAllreadyMemberOrCreator(teams, user);
+
+            if(!existingTeam)
+            {
+                System.out.printf("Team %s does not exist!%n", team);
+                command = scanner.nextLine();
+                continue;
+            }
+            if(memberOtherTeam)
+            {
+                System.out.printf("Member %s cannot join team %s!%n", user, team);
+                command = scanner.nextLine();
+                continue;
+            }
+            teams = addNewMembers(teams, user, team);
+            command = scanner.nextLine();
+
+        }
+        teams.sort(Comparator.comparing(Team::getTeamName, Comparator.naturalOrder()));
+        teams.sort(Comparator.comparing(Team::getCounter, Comparator.reverseOrder()));
+
+       printFinalState(teams);
+    }
+    public static boolean createdTeamOrCreateOtherTeam( List<Team> teams,  String creator,  String teamName)
+    {
+        boolean canNotCreate = false;
+        for(int j = 0; j < teams.size(); j++)
+        {
+
+            if(teams.get(j).getTeamName().equals(teamName))
+            {
+                canNotCreate = true;
+                System.out.printf("Team %s was already created!%n", teamName);
+                break;
+            }
+            else if(teams.get(j).getCreator().equals(creator))
+            {
+                canNotCreate = true;
+                System.out.printf("%s cannot create another team!%n", creator);
+                break;
+            }
+        }
+        return canNotCreate;
+    }
+    public static boolean existingTeam(List<Team> teams, String team)
+    {
+       boolean  existingTeam = false;
+       for(int i = 0; i < teams.size(); i++)
+       {
+           if(teams.get(i).getTeamName().equals(team))
+           {
+               existingTeam = true;
+           }
+       }
+       return existingTeam;
+    }
+    public static boolean containsAllreadyMemberOrCreator(List<Team> teams, String user)
+    {
+
+        boolean  memberOtherTeam = false;
+        for(int i = 0; i < teams.size(); i++)
+        {
+            if(teams.get(i).getMembers().contains(user) || teams.get(i).getCreator().equals(user))
+            {
+                memberOtherTeam = true;
+            }
+        }
+        return memberOtherTeam;
+    }
+    public static List<Team> addNewMembers(List<Team> teams, String user, String team)
+    {
+        for(int i = 0; i < teams.size(); i++)
+        {
+            if(teams.get(i).getTeamName().equals(team) &&  !teams.get(i).getMembers().contains(user))
+            {
+                teams.get(i).getMembers().add(user);
+                teams.get(i).setCounter(teams.get(i).getMembers().size());
+            }
+        }
+        return teams;
+    }
+    public static void printFinalState(List<Team> teams)
+    {
+
+        for(Team team : teams)
+        {
+            Collections.sort(team.getMembers());
+            if(team.getMembers().size() >= 1)
+            {
+                System.out.printf("%s%n", team.getTeamName());
+
+                System.out.printf("- %s%n", team.getCreator());
+                for(String member : team.getMembers())
+                {
+                    System.out.printf("-- %s%n", member);
+
+                }
+            }
+        }
+        System.out.println("Teams to disband:");
+        teams.sort(Comparator.comparing(Team::getTeamName, Comparator.naturalOrder()));
+        for(Team team : teams)
+        {
+
+            if(team.getMembers().size() == 0)
+            {
+                System.out.printf("%s%n", team.getTeamName());
+            }
+        }
+    }
+}
+class Team
+{
+    private String teamName;
+    private String creator;
+    private List<String> members;
+    private int counter;
+
+    Team(String teamName, String creator, List<String> members, int counter) {
+        this.teamName = teamName;
+        this.creator = creator;
+        this.members = members;
+        this.counter = counter;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public List<String> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<String> members) {
+        this.members = members;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+}
