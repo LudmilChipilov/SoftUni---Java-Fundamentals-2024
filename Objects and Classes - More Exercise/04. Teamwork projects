@@ -43,7 +43,7 @@ public class _04_Teamwork_projects
             String user = comArgs[0];
             String team = comArgs[1];
             boolean existingTeam = existingTeam(teams, team);
-            boolean memberOtherTeam = containsAllreadyMemberOrCreator(teams, user);
+            boolean memberOtherTeam = containsAlreadyMemberOrCreator(teams, user);
 
             if(!existingTeam)
             {
@@ -99,7 +99,7 @@ public class _04_Teamwork_projects
        }
        return existingTeam;
     }
-    public static boolean containsAllreadyMemberOrCreator(List<Team> teams, String user)
+    public static boolean containsAlreadyMemberOrCreator(List<Team> teams, String user)
     {
 
         boolean  memberOtherTeam = false;
