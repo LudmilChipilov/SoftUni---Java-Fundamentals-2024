@@ -1,0 +1,33 @@
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Scanner;
+
+public class _03_Odd_Occurrences
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String[] words = scanner.nextLine().toLowerCase().split(" ");
+        LinkedHashMap<String, Integer> counts = new LinkedHashMap<>();
+        for(String word : words)
+        {
+            if(counts.containsKey(word))
+            {
+                counts.put(word, counts.get(word) + 1);
+            }
+            else
+            {
+                counts.put(word, 1);
+            }
+        }
+        ArrayList<String> odds = new ArrayList<>();
+        for(var entry : counts.entrySet())
+        {
+            if(entry.getValue() % 2 == 1)
+            {
+                odds.add(entry.getKey());
+            }
+        }
+        System.out.print(String.join(", ", odds));
+    }
+}
