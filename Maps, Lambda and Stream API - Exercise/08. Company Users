@@ -1,0 +1,97 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+
+public class _08_Company_Users
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Company_Users> usersList = new ArrayList<>();
+        String command = scanner.nextLine();
+        while(!command.equals("End"))
+        {
+            String[] comArgs = command.split(" -> ");
+            String companyName = comArgs[0];
+            String id = comArgs[1];
+            usersList = createOrUpdateAndAddUser(usersList, companyName, id);
+            command = scanner.nextLine();
+        }
+       printFinalState(usersList);
+    }
+    public static  List<Company_Users> createOrUpdateAndAddUser(List<Company_Users> usersList, String companyName,  String id)
+    {
+        List<String> ids = new ArrayList<>();
+        if(usersList.size() == 0)
+        {
+
+            ids.add(id);
+            Company_Users companyUsers = new Company_Users(companyName, ids);
+            usersList.add(companyUsers);
+        }
+        else
+        {
+            boolean isExisting = false;
+            for(int i = 0; i < usersList.size(); i++)
+            {
+                if(usersList.get(i).getCompany_name().equals(companyName))
+                {
+                    isExisting = true;
+                    if(!usersList.get(i).getIds().contains(id))
+                    {
+                        usersList.get(i).getIds().add(id);
+                    }
+                    break;
+                }
+            }
+            if(!isExisting)
+            {
+
+                ids.add(id);
+                Company_Users companyUsers = new Company_Users(companyName, ids);
+                usersList.add(companyUsers);
+            }
+        }
+        return usersList;
+    }
+    public static void printFinalState( List<Company_Users> usersList)
+    {
+        for(Company_Users user : usersList)
+        {
+            System.out.println(user.getCompany_name());
+            
+            for(String str : user.getIds())
+            {
+                System.out.printf("-- %s%n", str);
+            }
+
+        }
+    }
+}
+class Company_Users
+{
+    private String company_name;
+    private List<String> ids;
+
+    Company_Users(String companyName, List<String> ids) {
+        company_name = companyName;
+        this.ids = ids;
+    }
+
+    public String getCompany_name() {
+        return company_name;
+    }
+
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
+    }
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
+    }
+}
