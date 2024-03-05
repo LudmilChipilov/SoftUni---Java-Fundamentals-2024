@@ -1,0 +1,191 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _07_Legendary_Farming
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Legendary_Farming> farmingList = new ArrayList<>();
+        List<Legendary_Farming> junkList = new ArrayList<>();
+
+        //"shards", "fragments", "motes"
+
+        farmingList = initializeFarmingList(farmingList);
+        while(true)
+        {
+            String[] comArgs = scanner.nextLine().toLowerCase().split(" ");
+            int points = 0;
+            String name = "";
+            for(int i = 0; i < comArgs.length; i += 2)
+            {
+                 points = Integer.parseInt(comArgs[i]);
+                 name = comArgs[i + 1];
+                 if(name.equals("shards") || name.equals("fragments") || name.equals("motes"))
+                 {
+                     farmingList = createFarmingList(farmingList, points, name);
+                     if(isPointsOver250(farmingList))
+                     {
+                         printFinalState(farmingList, junkList, name);
+                         return;
+                     }
+                 }
+                 else
+                 {
+                     junkList = createJunkList(junkList, points, name);
+                 }
+
+
+            }
+
+        }
+
+    }
+    public static List<Legendary_Farming> initializeFarmingList(List<Legendary_Farming> farmingList)
+    {
+        Legendary_Farming legendaryFarming1 = new Legendary_Farming(0, "shards");
+        farmingList.add(legendaryFarming1);
+        Legendary_Farming legendaryFarming2 = new Legendary_Farming(0, "fragments");
+        farmingList.add(legendaryFarming2);
+        Legendary_Farming legendaryFarming3 = new Legendary_Farming(0, "motes");
+        farmingList.add(legendaryFarming3);
+        return farmingList;
+    }
+    public static  List<Legendary_Farming> createFarmingList( List<Legendary_Farming> farmingList, int points, String name)
+    {
+
+         if(farmingList.size() == 0)
+         {
+             Legendary_Farming lf = new Legendary_Farming(points, name);
+             farmingList.add(lf);
+         }
+         else
+         {
+             boolean isExisting = false;
+             for(int i = 0; i < farmingList.size(); i++)
+             {
+                 if(farmingList.get(i).getName().equals(name))
+                 {
+                     isExisting = true;
+                     farmingList.get(i).setPoints(farmingList.get(i).getPoints() + points);
+
+                 }
+             }
+             if(!isExisting)
+             {
+                 Legendary_Farming lf = new Legendary_Farming(points, name);
+                 farmingList.add(lf);
+             }
+         }
+         return farmingList;
+    }
+    public static  List<Legendary_Farming> createJunkList( List<Legendary_Farming> junkList, int points, String name)
+    {
+
+        if(junkList.size() == 0)
+        {
+            Legendary_Farming lf = new Legendary_Farming(points, name);
+            junkList.add(lf);
+        }
+        else
+        {
+            boolean isExisting = false;
+            for(int i = 0; i < junkList.size(); i++)
+            {
+                if(junkList.get(i).getName().equals(name))
+                {
+                    isExisting = true;
+                    junkList.get(i).setPoints(junkList.get(i).getPoints() + points);
+
+                }
+            }
+            if(!isExisting)
+            {
+                Legendary_Farming lf = new Legendary_Farming(points, name);
+                junkList.add(lf);
+            }
+        }
+        return junkList;
+    }
+    public static boolean isPointsOver250(List<Legendary_Farming> farmingList)
+    {
+        for(Legendary_Farming farm : farmingList)
+        {
+            if(farm.getPoints() >= 250)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static void printFinalState(List<Legendary_Farming> farmingList, List<Legendary_Farming> junkList,  String name)
+    {
+        //"shards", "fragments", "motes"
+        for(Legendary_Farming farm : farmingList)
+        {
+            if(farm.getPoints() >= 250)
+            {
+                String win = "";
+                if(farm.getName().equals("shards"))
+                {
+                    win = "Shadowmourne";
+                }
+                else if(farm.getName().equals("fragments"))
+                {
+                    win = "Valanyr";
+                }
+                else if(farm.getName().equals("motes"))
+                {
+                    win = "Dragonwrath";
+                }
+                System.out.printf("%s obtained!%n", win);
+            }
+        }
+
+
+         for(Legendary_Farming farm : farmingList)
+         {
+             if(farm.getPoints() >= 250)
+             {
+                 System.out.printf("%s: %d%n", name, farm.getPoints() - 250);
+                 continue;
+             }
+             else
+             {
+                 System.out.printf("%s: %d%n", farm.getName(), farm.getPoints());
+             }
+         }
+        for(Legendary_Farming farm : junkList)
+        {
+            System.out.printf("%s: %d%n", farm.getName(), farm.getPoints());
+
+        }
+    }
+}
+class Legendary_Farming
+{
+    private int points;
+    private String name;
+
+    Legendary_Farming(int points, String name) {
+        this.points = points;
+        this.name = name;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
