@@ -1,0 +1,168 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _10_SoftUni_Exam_Results
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<UserPoints> userPointsList = new ArrayList<>();
+        List<LanguageAndCount> languageAndCountList = new ArrayList<>();
+        String command = scanner.nextLine();
+        while(!command.equals("exam finished"))
+        {
+            String[] comArgs = command.split("-");
+            if(comArgs.length == 3)
+            {
+                String name = comArgs[0];
+                String language = comArgs[1];
+                int points = Integer.parseInt(comArgs[2]);
+                userPointsList = createUserNameAndPointsOrUpdate(userPointsList, name, points);
+                languageAndCountList = createOrUpdateLanguageCount(languageAndCountList, language);
+            }
+            else if(comArgs.length == 2)
+            {
+                String name = comArgs[0];
+                userPointsList = deleteExistingUser(userPointsList, name);
+            }
+            command = scanner.nextLine();
+        }
+       printFinalState(userPointsList, languageAndCountList);
+    }
+    public static  List<UserPoints> createUserNameAndPointsOrUpdate( List<UserPoints> userPointsList, String name, int points)
+    {
+        if(userPointsList.size() == 0)
+        {
+            UserPoints userPoints = new UserPoints(name, points);
+            userPointsList.add(userPoints);
+        }
+        else
+        {
+            boolean isExistingUser = false;
+            for(int i = 0; i < userPointsList.size(); i++)
+            {
+                if(userPointsList.get(i).getUser().equals(name))
+                {
+                    isExistingUser = true;
+                    if(userPointsList.get(i).getPoints() < points)
+                    {
+                        userPointsList.get(i).setPoints(points);
+                    }
+                    break;
+                }
+            }
+            if(!isExistingUser)
+            {
+                UserPoints userPoints = new UserPoints(name, points);
+                userPointsList.add(userPoints);
+            }
+        }
+        return userPointsList;
+    }
+    public static List<LanguageAndCount> createOrUpdateLanguageCount( List<LanguageAndCount> languageAndCountList, String language)
+    {
+        int count = 1;
+        if(languageAndCountList.size() == 0)
+        {
+
+            LanguageAndCount languageAndCount = new LanguageAndCount(language, count);
+            languageAndCountList.add(languageAndCount);
+        }
+        else
+        {
+            boolean isExistingLanguage = false;
+            for(int i = 0 ;i < languageAndCountList.size(); i++)
+            {
+                if(languageAndCountList.get(i).getLanguage().equals(language))
+                {
+                    isExistingLanguage = true;
+                    languageAndCountList.get(i).setCount(languageAndCountList.get(i).getCount() + 1);
+                    break;
+                }
+            }
+            if(!isExistingLanguage)
+            {
+                LanguageAndCount languageAndCount = new LanguageAndCount(language, count);
+                languageAndCountList.add(languageAndCount);
+            }
+        }
+        return languageAndCountList;
+    }
+    public static  List<UserPoints> deleteExistingUser( List<UserPoints> userPointsList, String name)
+    {
+        for(int i = 0; i < userPointsList.size(); i++)
+        {
+            if(userPointsList.get(i).getUser().equals(name))
+            {
+                userPointsList.remove(i);
+            }
+        }
+        return userPointsList;
+    }
+    public static void printFinalState( List<UserPoints> userPointsList,  List<LanguageAndCount> languageAndCountList)
+    {
+        System.out.println("Results:");
+        for(UserPoints user : userPointsList)
+        {
+            System.out.printf("%s | %d%n", user.getUser(), user.getPoints());
+        }
+        System.out.println("Submissions:");
+        for(LanguageAndCount language  : languageAndCountList)
+        {
+            System.out.printf("%s - %d%n", language.getLanguage(), language.getCount());
+        }
+    }
+}
+class UserPoints
+{
+    private String user;
+    private int points;
+
+    UserPoints(String user, int points) {
+        this.user = user;
+        this.points = points;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+}
+class LanguageAndCount
+{
+    private String language;
+    private int count;
+
+    LanguageAndCount(String language, int count) {
+        this.language = language;
+        this.count = count;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+}
