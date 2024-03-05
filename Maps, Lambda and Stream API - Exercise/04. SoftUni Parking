@@ -1,0 +1,115 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _04_SoftUni_Parking
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<SoftUni_Parking> parkingList = new ArrayList<>();
+        int n = Integer.parseInt(scanner.nextLine());
+        for(int i = 0; i < n; i++)
+        {
+            String[] comArgs = scanner.nextLine().split(" ");
+            String first = comArgs[0];
+            if(first.equals("register"))
+            {
+                String name = comArgs[1];
+                String licensePlateNumber = comArgs[2];
+                if(parkingList.size() == 0)
+                {
+                    SoftUni_Parking sp = new SoftUni_Parking(comArgs[1], comArgs[2]);
+                    parkingList.add(sp);
+                    System.out.printf("%s registered %s successfully%n", name, licensePlateNumber);
+                    continue;
+                }
+                else
+                {
+                    parkingList = createUser(parkingList, name, licensePlateNumber);
+                }
+            }
+            else if(first.equals("unregister"))
+            {
+                 String name = comArgs[1];
+                 parkingList = unregisterExistingUser(parkingList, name);
+            }
+        }
+        printFinalState(parkingList);
+    }
+    public static List<SoftUni_Parking> createUser(List<SoftUni_Parking> parkingList,  String name,  String licensePlateNumber)
+    {
+
+        boolean isExist = false;
+        for(SoftUni_Parking user : parkingList)
+        {
+            if(user.getName().equals(name))
+            {
+                isExist = true;
+                System.out.printf("ERROR: already registered with plate number %s%n", user.getLicensePlateNumber());
+                break;
+            }
+        }
+        if(!isExist)
+        {
+            SoftUni_Parking sp = new SoftUni_Parking(name, licensePlateNumber);
+            System.out.printf("%s registered %s successfully%n", name, licensePlateNumber);
+            parkingList.add(sp);
+        }
+        return parkingList;
+    }
+    public static List<SoftUni_Parking> unregisterExistingUser(List<SoftUni_Parking> parkingList, String name)
+    {
+        boolean isExist = false;
+        List<SoftUni_Parking> currentList = new ArrayList<>();
+        currentList = parkingList;
+        for(SoftUni_Parking user : currentList)
+        {
+            if(user.getName().equals(name))
+            {
+                isExist = true;
+                parkingList.remove(user);
+                System.out.printf("%s unregistered successfully%n", name);
+                break;
+            }
+        }
+        if(!isExist)
+        {
+            System.out.printf("ERROR: user %s not found%n", name);
+        }
+        return parkingList;
+    }
+    public static void printFinalState(List<SoftUni_Parking> parkingList)
+    {
+        for(SoftUni_Parking user : parkingList)
+        {
+            System.out.printf("%s => %s%n", user.getName(), user.getLicensePlateNumber());
+        }
+    }
+}
+class SoftUni_Parking
+{
+    private String name;
+    private String licensePlateNumber;
+
+    SoftUni_Parking(String name, String licensePlateNumber) {
+        this.name = name;
+        this.licensePlateNumber = licensePlateNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLicensePlateNumber() {
+        return licensePlateNumber;
+    }
+
+    public void setLicensePlateNumber(String licensePlateNumber) {
+        this.licensePlateNumber = licensePlateNumber;
+    }
+}
