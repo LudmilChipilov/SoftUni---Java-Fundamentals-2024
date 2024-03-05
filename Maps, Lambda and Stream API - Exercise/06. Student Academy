@@ -1,0 +1,93 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class _06_Student_Academy
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Student_Academy> academyList = new ArrayList<>();
+        int n = Integer.parseInt(scanner.nextLine());
+        for(int i = 0; i < n; i++)
+        {
+            String name = scanner.nextLine();
+            double grade = Double.parseDouble(scanner.nextLine());
+            academyList = createOrUpdateStudent(academyList, name, grade);
+        }
+      printFinalState(academyList);
+    }
+    public static List<Student_Academy> createOrUpdateStudent( List<Student_Academy> academyList, String name, double grade)
+    {
+
+        if(academyList.size() == 0)
+        {
+            List<Double> grades = new ArrayList<>();
+            grades.add(grade);
+            Student_Academy student_academy = new Student_Academy(name, grades);
+            academyList.add(student_academy);
+        }
+        else
+        {
+            boolean isExist = false;
+            for(int i = 0; i < academyList.size(); i++)
+            {
+                if(academyList.get(i).getName().equals(name))
+                {
+                    isExist = true;
+                    academyList.get(i).getGrades().add(grade);
+                    break;
+                }
+            }
+            if(!isExist)
+            {
+                List<Double> grades = new ArrayList<>();
+                grades.add(grade);
+                Student_Academy student_academy = new Student_Academy(name, grades);
+                academyList.add(student_academy);
+            }
+        }
+        return academyList;
+    }
+    public static void printFinalState( List<Student_Academy> academyList)
+    {
+        for(Student_Academy student : academyList)
+        {
+            double average = student.getGrades().stream()
+                .mapToDouble(Double::doubleValue)
+                .average()
+                .getAsDouble();
+            if(average >= 4.50)
+            {
+                System.out.printf("%s -> %.2f%n", student.getName(), average);
+            }
+        }
+    }
+}
+class Student_Academy
+{
+    private String name;
+    private List<Double> grades;
+
+    Student_Academy(String name, List<Double> grades) {
+        this.name = name;
+        this.grades = grades;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Double> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(List<Double> grades) {
+        this.grades = grades;
+    }
+}
