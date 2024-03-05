@@ -1,0 +1,103 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _05_Courses
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<SoftUniCourse> courseList = new ArrayList<>();
+        String command = scanner.nextLine();
+        while(!command.equals("end"))
+        {
+            String[] comArgs = command.split(" : ");
+            String courseName = comArgs[0];
+            String studentName = comArgs[1];
+            courseList = createAndAddCourseAndUser(courseList, courseName, studentName);
+            command = scanner.nextLine();
+        }
+      printFinalState(courseList);
+    }
+    public static  List<SoftUniCourse> createAndAddCourseAndUser(List<SoftUniCourse> courseList,  String courseName,  String studentName)
+    {
+        List<String> list = new ArrayList<>();
+
+        if(courseList.size() == 0)
+        {
+
+            list.add(studentName);
+            SoftUniCourse softUniCourse = new SoftUniCourse(courseName, list, list.size());
+            courseList.add(softUniCourse);
+        }
+        else
+        {
+            boolean isExist = false;
+            for(int i = 0; i <courseList.size(); i++)
+            {
+                if(courseList.get(i).getCourseName().equals(courseName))
+                {
+                    isExist = true;
+                    courseList.get(i).getStudentName().add(studentName);
+                    courseList.get(i).setCounter(courseList.get(i).getStudentName().size());
+                    break;
+                }
+            }
+            if(!isExist)
+            {
+                list.add(studentName);
+                SoftUniCourse softUniCourse = new SoftUniCourse(courseName, list, list.size());
+                courseList.add(softUniCourse);
+            }
+        }
+        return courseList;
+    }
+    public static void printFinalState(List<SoftUniCourse> courseList)
+    {
+        for(SoftUniCourse list : courseList)
+        {
+            System.out.printf("%s: %d%n", list.getCourseName(), list.getCounter());
+            for(String user : list.getStudentName())
+            {
+                System.out.printf("-- %s%n", user);
+            }
+        }
+    }
+}
+class SoftUniCourse
+{
+    private String courseName;
+    private List<String> studentName;
+    private int counter;
+
+
+    SoftUniCourse(String courseName, List<String> studentName, int counter) {
+        this.courseName = courseName;
+        this.studentName = studentName;
+        this.counter = counter;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public List<String> getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(List<String> studentName) {
+        this.studentName = studentName;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+}
