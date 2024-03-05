@@ -1,0 +1,85 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class _01_Count_Chars_in_a_String
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine().replace(" ", "");
+        List<CountChars> charsList = new ArrayList<>();
+        charsList = findCharsCountInString(input, charsList);
+        printFinalState(charsList);
+    }
+    public static  List<CountChars> findCharsCountInString(String input, List<CountChars> charsList)
+    {
+        for(int i = 0; i < input.length(); i++)
+        {
+            String ch = input.charAt(i) + "";
+            if(charsList.size() == 0)
+            {
+                CountChars countChars = new CountChars(ch, 1);
+                charsList.add(countChars);
+                continue;
+            }
+            boolean isContain = false;
+            for(int j = 0; j < charsList.size(); j++)
+            {
+
+
+                if(ch.equals(charsList.get(j).getCh()))
+                {
+                    charsList.get(j).setCounter(charsList.get(j).getCounter() + 1);
+                    isContain = true;
+                    break;
+                }
+
+            }
+            if(!isContain)
+            {
+                CountChars countChars = new CountChars(ch, 1);
+                charsList.add(countChars);
+            }
+        }
+        return charsList;
+    }
+    public static void printFinalState(List<CountChars> charsList)
+    {
+        
+        for(CountChars ch : charsList)
+        {
+            System.out.printf("%s -> %d%n", ch.getCh(), ch.getCounter());
+        }
+    }
+}
+class CountChars
+{
+    private String ch;
+    private int counter;
+
+
+    CountChars(String ch, int counter)
+    {
+        this.ch = ch;
+        this.counter = counter;
+    }
+
+    public String getCh() {
+        return ch;
+    }
+
+    public void setCh(String ch) {
+        this.ch = ch;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+}
