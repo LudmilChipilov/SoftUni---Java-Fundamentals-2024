@@ -1,0 +1,108 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _03_Orders
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<ProductOrders> ordersList = new ArrayList<>();
+        String command = scanner.nextLine();
+        while(!command.equals("buy"))
+        {
+            String[] comArgs = command.split(" ");
+            String name = comArgs[0];
+            double price = Double.parseDouble(comArgs[1]);
+            double quantity = Double.parseDouble(comArgs[2]);
+            double totalPrice = price*quantity;
+            ordersList = createAndAddOrUpdeteOrder(ordersList, name, price, quantity, totalPrice);
+            command = scanner.nextLine();
+        }
+      printFinalState(ordersList);
+    }
+    public static  List<ProductOrders> createAndAddOrUpdeteOrder(List<ProductOrders> ordersList, String name,
+                                                                 double price, double quantity, double totalPrice)
+    {
+        if(ordersList.size() == 0)
+        {
+            ProductOrders po = new ProductOrders(name, price, quantity, totalPrice);
+            ordersList.add(po);
+        }
+        else
+        {
+            boolean isContain = false;
+            for(int i = 0; i < ordersList.size(); i++)
+            {
+                if(ordersList.get(i).getName().equals(name))
+                {
+                    isContain = true;
+                    ordersList.get(i).setQuantity(ordersList.get(i).getQuantity() + quantity);
+                    ordersList.get(i).setPrice(price);
+                    ordersList.get(i).setTotalPrice(ordersList.get(i).getQuantity()*price);
+                    break;
+                }
+
+            }
+            if(!isContain)
+            {
+                ProductOrders po = new ProductOrders(name, price, quantity, price*quantity);
+                ordersList.add(po);
+            }
+        }
+        return ordersList;
+    }
+    public static void printFinalState( List<ProductOrders> ordersList)
+    {
+        for(ProductOrders product : ordersList)
+        {
+            System.out.printf("%s -> %.2f%n", product.getName(), product.getTotalPrice());
+        }
+    }
+}
+class ProductOrders
+{
+    private String name;
+    private double price;
+    private double quantity;
+    private double totalPrice;
+
+    ProductOrders(String name, double price, double quantity, double totalPrice) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.totalPrice = totalPrice;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+}
