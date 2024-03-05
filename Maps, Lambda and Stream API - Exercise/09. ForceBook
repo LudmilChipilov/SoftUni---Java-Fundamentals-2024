@@ -1,0 +1,152 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _09_ForceBook
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<ForceBook> bookList = new ArrayList<>();
+        String command = scanner.nextLine();
+        while(!command.equals("Lumpawaroo"))
+        {
+            String[] comArgs = new String[2];
+            if(command.contains("|"))
+            {
+                 comArgs = command.split(" \\| ");
+                 String force_side = comArgs[0];
+                 String force_user = comArgs[1];
+                 bookList = createAndAddUser(bookList, force_side, force_user);
+            }
+            else if(command.contains("->"))
+            {
+                comArgs = command.split(" -> ");
+                String force_user = comArgs[0];
+                String force_side = comArgs[1];
+                bookList = changeExistingUserOrCreateAndAddUser(bookList, force_user, force_side);
+            }
+            command = scanner.nextLine();
+        }
+       printFinalState(bookList);
+    }
+    public static List<ForceBook> createAndAddUser(List<ForceBook> bookList,   String force_side, String force_user)
+    {
+        List<String> users = new ArrayList<>();
+        if(bookList.size() == 0)
+        {
+            users.add(force_user);
+            ForceBook forceBook = new ForceBook(force_side, users);
+            bookList.add(forceBook);
+        }
+        else
+        {
+            boolean isExistingUser = false;
+            boolean isExistingSide = false;
+            for(ForceBook user : bookList)
+            {
+                if(user.getForceUsers().contains(force_user))
+                {
+                    isExistingUser = true;
+                }
+                if(user.getForceSide().equals(force_side))
+                {
+                    isExistingSide = true;
+                }
+            }
+            if(!isExistingUser && !isExistingSide)
+            {
+                users.add(force_user);
+                ForceBook forceBook = new ForceBook(force_side, users);
+                bookList.add(forceBook);
+            }
+            if(!isExistingUser && isExistingSide)
+            {
+                for(int i = 0; i < bookList.size(); i++)
+                {
+                    if(bookList.get(i).getForceSide().equals(force_side))
+                    {
+                        bookList.get(i).getForceUsers().add(force_user);
+                    }
+                }
+            }
+        }
+        return bookList;
+    }
+    public static List<ForceBook> changeExistingUserOrCreateAndAddUser(List<ForceBook> bookList,  String force_user, String force_side)
+    {
+        List<String> users = new ArrayList<>();
+        boolean isExistingSide = false;
+        for(int i = 0; i < bookList.size(); i++)
+        {
+            if(bookList.get(i).getForceUsers().contains(force_user))
+            {
+                bookList.get(i).getForceUsers().remove(force_user);
+            }
+            if(bookList.get(i).getForceSide().equals(force_side))
+            {
+                isExistingSide = true;
+            }
+        }
+        if(isExistingSide)
+        {
+            for(int i = 0; i < bookList.size(); i++)
+            {
+                if(bookList.get(i).getForceSide().equals(force_side))
+                {
+                    bookList.get(i).getForceUsers().add(force_user);
+
+                }
+            }
+        }
+        else
+        {
+            users.add(force_user);
+            ForceBook forceBook = new ForceBook(force_side, users);
+            bookList.add(forceBook);
+        }
+        System.out.printf("%s joins the %s side!%n", force_user, force_side);
+        return bookList;
+    }
+    public static void printFinalState(List<ForceBook> bookList)
+    {
+        for(ForceBook user : bookList)
+        {
+            if(user.getForceUsers().size() > 0)
+            {
+                System.out.printf("Side: %s, Members: %d%n", user.getForceSide(), user.getForceUsers().size());
+                for(String str : user.getForceUsers())
+                {
+                    System.out.printf("! %s%n", str);
+                }
+            }
+
+        }
+    }
+}
+class ForceBook
+{
+    private String forceSide;
+    private List<String> forceUsers;
+
+    ForceBook(String forceSide, List<String> forceUsers) {
+        this.forceSide = forceSide;
+        this.forceUsers = forceUsers;
+    }
+
+    public String getForceSide() {
+        return forceSide;
+    }
+
+    public void setForceSide(String forceSide) {
+        this.forceSide = forceSide;
+    }
+
+    public List<String> getForceUsers() {
+        return forceUsers;
+    }
+
+    public void setForceUsers(List<String> forceUsers) {
+        this.forceUsers = forceUsers;
+    }
+}
