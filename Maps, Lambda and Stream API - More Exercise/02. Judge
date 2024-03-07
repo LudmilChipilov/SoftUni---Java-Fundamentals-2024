@@ -1,0 +1,211 @@
+import java.util.*;
+
+public class _02_Judge
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<JudgeSystem> judgeSystemList = new ArrayList<>();
+        LinkedHashMap<String, Integer> contestCount = new LinkedHashMap<>();
+        List<NamePoints> individualStandings = new ArrayList<>();
+        //LinkedHashMap<String, Integer> namePoints = new LinkedHashMap<>();
+        String command = scanner.nextLine();
+        while(!command.equals("no more time"))
+        {
+            String[] comArgs = command.split(" -> ");
+            String userName = comArgs[0];
+            String contest = comArgs[1];
+            int points = Integer.parseInt(comArgs[2]);
+
+            judgeSystemList = addOrUpdateContest_Username_Points(judgeSystemList, userName,
+                    contest, points);
+            command  = scanner.nextLine();
+        }
+       contestCount = addContestOrIncreaseCount(contestCount, judgeSystemList);
+       printFinalState(contestCount, judgeSystemList);
+       printFinalIndividualStandings(judgeSystemList);
+    }
+    public static LinkedHashMap<String, Integer> addContestOrIncreaseCount(LinkedHashMap<String, Integer> contestCount,
+                                                                           List<JudgeSystem> judgeSystemList )
+    {
+        for(JudgeSystem judge : judgeSystemList)
+        {
+            if(contestCount.size() == 0)
+            {
+                contestCount.put(judge.getContest(), 1);
+            }
+            else
+            {
+                if(contestCount.containsKey(judge.getContest()))
+                {
+                    contestCount.put(judge.getContest(), contestCount.get(judge.getContest()) + 1);
+                }
+                else
+                {
+                    contestCount.put(judge.getContest(), 1);
+                }
+            }
+        }
+        return contestCount;
+    }
+    public static  List<JudgeSystem> addOrUpdateContest_Username_Points(List<JudgeSystem> judgeSystemList, String userName,
+                                                        String contest, int points)
+    {
+        if(judgeSystemList.size() == 0)
+        {
+            JudgeSystem js = new JudgeSystem(userName, contest, points);
+            judgeSystemList.add(js);
+        }
+        else
+        {
+            boolean isExistingContestUsername = false;
+            for(int i = 0; i < judgeSystemList.size(); i++)
+            {
+                if(judgeSystemList.get(i).getContest().equals(contest))
+                {
+                    if(judgeSystemList.get(i).getUserName().equals(userName))
+                    {
+                        isExistingContestUsername = true;
+                        if(points > judgeSystemList.get(i).getPoints())
+                        {
+                            judgeSystemList.get(i).setPoints(points);
+                        }
+                    }
+                }
+            }
+            if(!isExistingContestUsername)
+            {
+                JudgeSystem js = new JudgeSystem(userName, contest, points);
+                judgeSystemList.add(js);
+            }
+        }
+        return judgeSystemList;
+    }
+
+    public static void printFinalState(LinkedHashMap<String, Integer> contestCount, List<JudgeSystem> judgeSystemList)
+    {
+        judgeSystemList.sort(Comparator.comparing(JudgeSystem::getPoints).reversed().
+                thenComparing(Comparator.comparing(JudgeSystem::getUserName)));
+        for(Map.Entry<String, Integer> entry : contestCount.entrySet())
+        {
+            System.out.printf("%s: %d participants%n", entry.getKey(), entry.getValue());
+            int counter = 1;
+            for(JudgeSystem cont : judgeSystemList)
+            {
+
+                if(entry.getKey().equals(cont.getContest()))
+                {
+                    System.out.printf("%d. %s <::> %d%n", counter, cont.getUserName(), cont.getPoints());
+                    counter++;
+                }
+            }
+        }
+    }
+    public static void printFinalIndividualStandings(List<JudgeSystem> judgeSystemList)
+    {
+        List<NamePoints> individualStandings = new ArrayList<>();
+        for(JudgeSystem judge : judgeSystemList)
+        {
+            if(individualStandings.size() == 0)
+            {
+                NamePoints np = new NamePoints(judge.getUserName(), judge.getPoints());
+                individualStandings.add(np);
+            }
+            else
+            {
+                boolean isExistingName = false;
+                for(int i = 0; i < individualStandings.size(); i++)
+                {
+                    if(judge.getUserName().equals(individualStandings.get(i).getName()))
+                    {
+                        isExistingName = true;
+                        individualStandings.get(i).setPoints(individualStandings.get(i).getPoints() + judge.getPoints());
+                    }
+                }
+                if(!isExistingName)
+                {
+                    NamePoints np = new NamePoints(judge.getUserName(), judge.getPoints());
+                    individualStandings.add(np);
+                }
+            }
+        }
+        individualStandings.sort(Comparator.comparing(NamePoints::getPoints).reversed());
+        System.out.println("Individual standings:");
+        int counter = 1;
+        for(NamePoints name : individualStandings)
+        {
+
+            System.out.printf("%d. %s -> %d%n", counter, name.getName(), name.getPoints());
+            counter++;
+
+        }
+
+    }
+
+
+
+
+
+}
+class JudgeSystem
+{
+    private String userName;
+    private String contest;
+    private int points;
+
+    JudgeSystem(String userName, String contest, int points) {
+        this.userName = userName;
+        this.contest = contest;
+        this.points = points;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getContest() {
+        return contest;
+    }
+
+    public void setContest(String contest) {
+        this.contest = contest;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+}
+class NamePoints
+{
+    private String name;
+    private int points;
+
+    NamePoints(String name, int points) {
+        this.name = name;
+        this.points = points;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+}
