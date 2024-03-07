@@ -1,0 +1,188 @@
+import java.util.*;
+
+
+public class _01_Ranking
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        LinkedHashMap<String, String> contestPassword = new LinkedHashMap<>();
+        List<String> studentNames = new ArrayList<>();
+        List<RankingStudents> rankingStudentsList = new ArrayList<>();
+        String command1 = scanner.nextLine();
+        while(!command1.equals("end of contests"))
+        {
+            String[] comArgs = command1.split(":");
+            String contest = comArgs[0];
+            String password = comArgs[1];
+            contestPassword = createAndAddContestPasswordList(contestPassword, contest, password);
+            command1 = scanner.nextLine();
+        }
+        String command2 = scanner.nextLine();
+        while(!command2.equals("end of submissions"))
+        {
+            String[] comArgs2 = command2.split("=>");
+            //{contest}=>{password}=>{username}=>{points}
+            String contest = comArgs2[0];
+            String password = comArgs2[1];
+
+            String userName = comArgs2[2];
+
+            int points = Integer.parseInt(comArgs2[3]);
+            if(checkContestAndPasswordIsValid(contestPassword, contest, password))
+            {
+                rankingStudentsList = createAndAddContestOrUpdateStudentPoints(rankingStudentsList, contest, userName, points);
+            }
+            command2 = scanner.nextLine();
+        }
+        studentNames = addValidStudentNames(studentNames, rankingStudentsList);
+        findAndPrintBestCandidate(rankingStudentsList, studentNames);
+
+        printFinalState(rankingStudentsList, studentNames);
+    }
+    public static  LinkedHashMap<String, String> createAndAddContestPasswordList(LinkedHashMap<String, String> contestPassword,
+                                                                                 String contest, String password)
+    {
+        if(contestPassword.size() == 0)
+        {
+            contestPassword.put(contest, password);
+        }
+        else
+        {
+            if(!contestPassword.containsKey(contest))
+            {
+                contestPassword.put(contest, password);
+            }
+        }
+        return contestPassword;
+    }
+    public static boolean checkContestAndPasswordIsValid(LinkedHashMap<String, String> contestPassword,
+                                                         String contest, String password)
+    {
+        if(contestPassword.containsKey(contest))
+        {
+            if(contestPassword.containsValue(password))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static  List<RankingStudents> createAndAddContestOrUpdateStudentPoints( List<RankingStudents> rankingStudentsList,
+                                                                               String contest, String userName, int points)
+    {
+        if(rankingStudentsList.size() == 0)
+        {
+            RankingStudents rs = new RankingStudents(contest, userName, points);
+            rankingStudentsList.add(rs);
+        }
+        else
+        {
+            boolean isExistingStudent = false;
+            for(int i = 0; i < rankingStudentsList.size(); i++)
+            {
+                if(rankingStudentsList.get(i).getUsername().equals(userName) && rankingStudentsList.get(i).getContest().equals(contest))
+                {
+                    isExistingStudent = true;
+                    if(points > rankingStudentsList.get(i).getPoints())
+                    {
+                        rankingStudentsList.get(i).setPoints(points);
+                    }
+                }
+            }
+            if(!isExistingStudent)
+            {
+                RankingStudents rs = new RankingStudents(contest, userName, points);
+                rankingStudentsList.add(rs);
+            }
+        }
+        return rankingStudentsList;
+    }
+    public static List<String> addValidStudentNames( List<String> studentNames, List<RankingStudents> rankingStudentsList)
+    {
+        for(RankingStudents stud : rankingStudentsList)
+        {
+            if(!studentNames.contains(stud.getUsername()))
+            {
+                studentNames.add(stud.getUsername());
+            }
+        }
+        Collections.sort(studentNames);
+        return studentNames;
+    }
+    public static void findAndPrintBestCandidate(List<RankingStudents> rankingStudentsList,  List<String> studentNames)
+    {
+        int maxPoints = 0;
+        String bestCandidate = "";
+        for(String name : studentNames)
+        {
+            int totalPoints = 0;
+            for(RankingStudents student : rankingStudentsList)
+            {
+                if(name.equals(student.getUsername()))
+                {
+                    totalPoints += student.getPoints();
+                }
+            }
+            if(totalPoints > maxPoints)
+            {
+                maxPoints = totalPoints;
+                bestCandidate = name;
+            }
+        }
+        System.out.printf("Best candidate is %s with total %d points.%n", bestCandidate, maxPoints);
+    }
+    public static void printFinalState(List<RankingStudents> rankingStudentsList, List<String> studentNames)
+    {
+        System.out.println("Ranking:");
+        rankingStudentsList.sort(Comparator.comparing(RankingStudents::getPoints).reversed());
+        for(String name : studentNames)
+        {
+            System.out.println(name);
+            for(RankingStudents stud : rankingStudentsList)
+            {
+                if(stud.getUsername().equals(name))
+                {
+                    System.out.printf("#  %s -> %d%n", stud.getContest(), stud.getPoints());
+                }
+            }
+        }
+    }
+}
+class RankingStudents
+{
+    //{contest}=>{password}=>{username}=>{points}
+    private String contest;
+    private String username;
+    private int points;
+
+    RankingStudents(String contest, String username, int points) {
+        this.contest = contest;
+        this.username = username;
+        this.points = points;
+    }
+
+    public String getContest() {
+        return contest;
+    }
+
+    public void setContest(String contest) {
+        this.contest = contest;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+}
