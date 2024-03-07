@@ -1,0 +1,205 @@
+import java.util.*;
+
+public class _05_Dragon_Army
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<DragonArmy> dragonsArmyList = new ArrayList<>();
+        List<String> dragonTypes = new ArrayList<>();
+        int n = Integer.parseInt(scanner.nextLine());
+        for(int i = 0; i < n; i++)
+        {
+            //health 250, damage 45, and armor 10
+            String[] comArgs = scanner.nextLine().split(" ");
+            String type = comArgs[0];
+            dragonTypes = addInexistingDragonType(dragonTypes, type);
+            String name = comArgs[1];
+            String d = comArgs[2];
+            int damage = checkIfDamageIsValid(d);
+            String h = comArgs[3];
+            int health = checkIfHealthIsValid(h);
+
+            String a = comArgs[4];
+            int armor = checkIfArmorIsValid(a);
+            dragonsArmyList = createAndAddOrUpdeteDragon(dragonsArmyList, type, name, damage, health, armor);
+        }
+        dragonsArmyList.sort(Comparator.comparing(DragonArmy::getName));
+        printFinalState(dragonsArmyList, dragonTypes);
+    }
+    public static  List<String> addInexistingDragonType(List<String> dragonTypes, String type)
+    {
+        if(dragonTypes.size() == 0)
+        {
+            dragonTypes.add(type);
+        }
+        else
+        {
+            if(!dragonTypes.contains(type))
+            {
+                dragonTypes.add(type);
+            }
+        }
+        return dragonTypes;
+    }
+    public static Integer checkIfHealthIsValid(String h)
+    {
+        int health = 0;
+        if(h.equals("null"))
+        {
+            health = 250;
+        }
+        else
+        {
+            health = Integer.parseInt(h);
+        }
+        return health;
+    }
+    public static Integer checkIfDamageIsValid(String d)
+    {
+        int damage = 0;
+        if(d.equals("null"))
+        {
+            damage = 45;
+        }
+        else
+        {
+            damage = Integer.parseInt(d);
+        }
+        return damage;
+    }
+    public static Integer checkIfArmorIsValid(String a)
+    {
+        int armor = 0;
+        if(a.equals("null"))
+        {
+            armor = 10;
+        }
+        else
+        {
+            armor = Integer.parseInt(a);
+        }
+        return armor;
+    }
+    public static  List<DragonArmy> createAndAddOrUpdeteDragon(List<DragonArmy> dragonsArmyList, String type, String name,
+                                                                int damage, int health, int armor)
+    {
+        if(dragonsArmyList.size() == 0)
+        {
+            DragonArmy dragonArmy = new DragonArmy(type, name, damage, health, armor);
+            dragonsArmyList.add(dragonArmy);
+        }
+        else
+        {
+
+            for(int i = 0; i < dragonsArmyList.size(); i++)
+            {
+                if(dragonsArmyList.get(i).getType().equals(type) &&
+                dragonsArmyList.get(i).getName().equals(name))
+                {
+                    dragonsArmyList.remove(i);
+                }
+            }
+            DragonArmy dragonArmy = new DragonArmy(type, name, damage, health, armor);
+            dragonsArmyList.add(dragonArmy);
+        }
+        return dragonsArmyList;
+    }
+    public static void printFinalState(List<DragonArmy> dragonsArmyList,  List<String> dragonTypes)
+    {
+        for(String drType : dragonTypes)
+        {
+            List<Double> averageDamage = new ArrayList<>();
+            List<Double> averageHealth = new ArrayList<>();
+            List<Double> averageArmor = new ArrayList<>();
+            for(DragonArmy da : dragonsArmyList)
+            {
+                if(da.getType().equals(drType))
+                {
+                    averageDamage.add(da.getDamage());
+                    averageHealth.add(da.getHealth());
+                    averageArmor.add(da.getArmor());
+                }
+            }
+            double avDamage = averageDamage.stream()
+                    .mapToDouble(Double::doubleValue)
+                    .average()
+                    .getAsDouble();
+            double averHealth = averageHealth.stream()
+                    .mapToDouble(Double::doubleValue)
+                    .average()
+                    .getAsDouble();
+
+            double avArmor = averageArmor.stream()
+                    .mapToDouble(Double::doubleValue)
+                    .average()
+                    .getAsDouble();
+            System.out.printf("%s::(%.2f/%.2f/%.2f)%n", drType, avDamage, averHealth, avArmor);
+            for(DragonArmy da : dragonsArmyList)
+            {
+                if(da.getType().equals(drType))
+                {
+                    System.out.printf("-%s -> damage: %.0f, health: %.0f, armor: %.0f%n",
+                            da.getName(), da.getDamage(), da.getHealth(), da.getArmor());
+                }
+            }
+        }
+    }
+}
+class DragonArmy
+{
+    //{type} {name} {damage} {health} {armor}
+    private String type;
+    private String name;
+    private int damage;
+    private int health;
+    private int armor;
+
+    DragonArmy(String type, String name, int damage, int health, int armor) {
+        this.type = type;
+        this.name = name;
+        this.damage = damage;
+        this.health = health;
+        this.armor = armor;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public double getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public double getArmor() {
+        return armor;
+    }
+
+    public void setArmor(int armor) {
+        this.armor = armor;
+    }
+}
