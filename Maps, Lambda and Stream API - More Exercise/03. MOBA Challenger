@@ -1,0 +1,251 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
+
+public class _03_MOBA_Challenger
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<MobaChallenger> mobaChallengers = new ArrayList<>();
+        List<PlayerTotalSkill> playerTotalSkills = new ArrayList<>();
+        List<String> playersList = new ArrayList<>();
+        String command = scanner.nextLine();
+        while(!command.equals("Season end"))
+        {
+            if(command.contains("->"))
+            {
+                String[] comArgs = command.split(" -> ");
+                String player = comArgs[0];
+                playersList = addInexistingPlayer(playersList, player);
+                String position = comArgs[1];
+                int skill = Integer.parseInt(comArgs[2]);
+                mobaChallengers = createAndAddOrUpdateMobaList(mobaChallengers, player, position, skill);
+            }
+            else if(command.contains("vs"))
+            {
+                String[] comArgs2 = command.split(" vs ");
+                String player1 = comArgs2[0];
+                String player2 = comArgs2[1];
+                if(isExistingBothPlayers(playersList, player1, player2))
+                {
+                    mobaChallengers = duelPlayer1VsPlayer2_OrNot(mobaChallengers, player1, player2);
+                }
+            }
+
+            command = scanner.nextLine();
+        }
+        playerTotalSkills = orderPlayersByTotalSkill(playerTotalSkills, mobaChallengers);
+        playerTotalSkills.sort(Comparator.comparing(PlayerTotalSkill::getTotalSkill).reversed()
+                .thenComparing(PlayerTotalSkill::getPlayer));
+        mobaChallengers.sort(Comparator.comparing(MobaChallenger::getSkill).reversed()
+                .thenComparing(MobaChallenger::getPosition));
+        printFinalState(mobaChallengers, playerTotalSkills);
+
+    }
+    public static List<MobaChallenger> createAndAddOrUpdateMobaList( List<MobaChallenger> mobaChallengers,
+                                                                     String player, String position, int skill)
+    {
+        if(mobaChallengers.size() == 0)
+        {
+            MobaChallenger mc = new MobaChallenger(player, position, skill);
+            mobaChallengers.add(mc);
+        }
+        else
+        {
+            boolean isExistingPlayerPosition = false;
+            for(int i = 0; i < mobaChallengers.size(); i++)
+            {
+                if(mobaChallengers.get(i).getPlayer().equals(player))
+                {
+                    if(mobaChallengers.get(i).getPosition().equals(position))
+                    {
+                        isExistingPlayerPosition = true;
+                        if(skill > mobaChallengers.get(i).getSkill())
+                        {
+                            mobaChallengers.get(i).setSkill(skill);
+                        }
+                    }
+                }
+            }
+            if(!isExistingPlayerPosition)
+            {
+                MobaChallenger mc = new MobaChallenger(player, position, skill);
+                mobaChallengers.add(mc);
+            }
+        }
+        return mobaChallengers;
+    }
+    public static List<String> addInexistingPlayer(List<String> playersList, String player)
+    {
+        if(playersList.size() == 0)
+        {
+            playersList.add(player);
+        }
+        else
+        {
+            if(!playersList.contains(player))
+            {
+                playersList.add(player);
+            }
+        }
+        return playersList;
+    }
+    public static boolean isExistingBothPlayers( List<String> playersList, String player1, String player2)
+    {
+        if(playersList.size() > 0 && playersList.contains(player1) && playersList.contains(player2))
+        {
+            return true;
+        }
+        return false;
+    }
+    public static  List<MobaChallenger> duelPlayer1VsPlayer2_OrNot(List<MobaChallenger> mobaChallengers,
+                                                                   String player1, String player2)
+    {
+        int totalPlayer1 = 0;
+        int totalPlayer2 = 0;
+        List<MobaChallenger> onlyPlayer1 = new ArrayList<>();
+        List<MobaChallenger> onlyPlayer2 = new ArrayList<>();
+        for(MobaChallenger player : mobaChallengers)
+        {
+            if(player.getPlayer().equals(player1))
+            {
+                onlyPlayer1.add(player);
+            }
+            else if(player.getPlayer().equals(player2))
+            {
+                onlyPlayer2.add(player);
+            }
+        }
+        for(MobaChallenger play1 : onlyPlayer1)
+        {
+            for(MobaChallenger play2 : onlyPlayer2)
+            {
+                if(play1.getPosition().equals(play2.getPosition()))
+                {
+                    totalPlayer1 += play1.getSkill();
+                    totalPlayer2 += play2.getSkill();
+                }
+            }
+        }
+        if(totalPlayer1 > totalPlayer2)
+        {
+            mobaChallengers.removeIf(x -> x.getPlayer().equals(player2));
+        }
+        else if(totalPlayer1 < totalPlayer2)
+        {
+            mobaChallengers.removeIf(x -> x.getPlayer().equals(player1));
+        }
+        return mobaChallengers;
+    }
+    public static  List<PlayerTotalSkill> orderPlayersByTotalSkill(  List<PlayerTotalSkill> playerTotalSkills,
+                                                                     List<MobaChallenger> mobaChallengers)
+    {
+        for(MobaChallenger moba : mobaChallengers)
+        {
+            if(playerTotalSkills.size() == 0)
+            {
+                PlayerTotalSkill pts = new PlayerTotalSkill(moba.getPlayer(), moba.getSkill());
+                playerTotalSkills.add(pts);
+            }
+            else
+            {
+                boolean isAlreadyAddedPlayer = false;
+                for(int i = 0; i < playerTotalSkills.size(); i++)
+                {
+                    if(playerTotalSkills.get(i).getPlayer().equals(moba.getPlayer()))
+                    {
+                        isAlreadyAddedPlayer = true;
+                        playerTotalSkills.get(i).setTotalSkill(playerTotalSkills.get(i).getTotalSkill() + moba.getSkill());
+                    }
+                }
+                if(!isAlreadyAddedPlayer)
+                {
+                    PlayerTotalSkill pts = new PlayerTotalSkill(moba.getPlayer(), moba.getSkill());
+                    playerTotalSkills.add(pts);
+                }
+            }
+        }
+        return playerTotalSkills;
+    }
+    public static void printFinalState(List<MobaChallenger> mobaChallengers,  List<PlayerTotalSkill> playerTotalSkills)
+    {
+        for(PlayerTotalSkill playTotal : playerTotalSkills)
+        {
+            System.out.printf("%s: %d skill%n", playTotal.getPlayer(), playTotal.getTotalSkill());
+            for(MobaChallenger moba : mobaChallengers)
+            {
+                if(moba.getPlayer().equals(playTotal.getPlayer()))
+                {
+                    System.out.printf("- %s <::> %d%n", moba.getPosition(), moba.getSkill());
+                }
+            }
+        }
+    }
+}
+class MobaChallenger
+{
+    //{player} -> {position} -> {skill}
+    private String player;
+    private String position;
+    private int skill;
+
+
+
+    MobaChallenger(String player, String position, int skill) {
+        this.player = player;
+        this.position = position;
+        this.skill = skill;
+    }
+
+    public String getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(String player) {
+        this.player = player;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public int getSkill() {
+        return skill;
+    }
+
+    public void setSkill(int skill) {
+        this.skill = skill;
+    }
+}
+class PlayerTotalSkill
+{
+    private String Player;
+    private int totalSkill;
+
+    PlayerTotalSkill(String player, int totalSkill) {
+        Player = player;
+        this.totalSkill = totalSkill;
+    }
+
+    public String getPlayer() {
+        return Player;
+    }
+
+    public void setPlayer(String player) {
+        Player = player;
+    }
+
+    public int getTotalSkill() {
+        return totalSkill;
+    }
+
+    public void setTotalSkill(int totalSkill) {
+        this.totalSkill = totalSkill;
+    }
+}
