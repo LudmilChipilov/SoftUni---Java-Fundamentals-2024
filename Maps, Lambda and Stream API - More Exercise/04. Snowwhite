@@ -1,0 +1,152 @@
+import java.util.*;
+
+public class _04_Snowwhite
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<SnowwhiteDwarf> dwarfsList = new ArrayList<>();
+        LinkedHashMap<String, Integer> hatsColorCount = new LinkedHashMap<>();
+        String command = scanner.nextLine();
+        while(!command.equals("Once upon a time"))
+        {
+            String[] comArgs = command.split(" <:> ");
+            String name = comArgs[0];
+            String hatColor = comArgs[1];
+            int physics = Integer.parseInt(comArgs[2]);
+            dwarfsList = createAndAddOrUpdateDwarf(dwarfsList, name, hatColor, physics);
+            command = scanner.nextLine();
+        }
+
+        dwarfsList = updateHatsColorCount(dwarfsList, hatsColorCount);
+
+
+        dwarfsList.sort(Comparator.comparing(SnowwhiteDwarf::getHatColorCount).reversed());
+        dwarfsList.sort(Comparator.comparing(SnowwhiteDwarf::getDwarfPhysics).reversed());
+        printFinalState(dwarfsList);
+
+    }
+    public static  List<SnowwhiteDwarf> createAndAddOrUpdateDwarf( List<SnowwhiteDwarf> dwarfsList, String name,
+                                                                   String hatColor, int physics)
+    {
+        if(dwarfsList.size() == 0)
+        {
+            SnowwhiteDwarf snowwhiteDwarf = new SnowwhiteDwarf(name, hatColor, physics, 1);
+            dwarfsList.add(snowwhiteDwarf);
+        }
+        else
+        {
+            boolean isExistingDwarfAndHatColor = false;
+            for(int i = 0; i < dwarfsList.size(); i++)
+            {
+                if(dwarfsList.get(i).getDwarfName().equals(name))
+                {
+                    if(dwarfsList.get(i).getDwarfHatColor().equals(hatColor))
+                    {
+                        isExistingDwarfAndHatColor = true;
+                        if(physics > dwarfsList.get(i).getDwarfPhysics())
+                        {
+                            dwarfsList.get(i).setDwarfPhysics(physics);
+                        }
+                    }
+                }
+            }
+            if(!isExistingDwarfAndHatColor)
+            {
+
+                SnowwhiteDwarf snowwhiteDwarf = new SnowwhiteDwarf(name, hatColor, physics, 1);
+                dwarfsList.add(snowwhiteDwarf);
+            }
+        }
+        return dwarfsList;
+
+    }
+    public static  List<SnowwhiteDwarf> updateHatsColorCount(List<SnowwhiteDwarf> dwarfsList,
+                                                             LinkedHashMap<String, Integer> hatsColorCount)
+    {
+        for(SnowwhiteDwarf dwarf : dwarfsList)
+        {
+            if(hatsColorCount.size() == 0)
+            {
+                hatsColorCount.put(dwarf.getDwarfHatColor(), 1);
+                continue;
+            }
+            else
+            {
+                if(!hatsColorCount.containsKey(dwarf.getDwarfHatColor()))
+                {
+                    hatsColorCount.put(dwarf.getDwarfHatColor(), 0);
+                }
+                hatsColorCount.put(dwarf.getDwarfHatColor(), hatsColorCount.get(dwarf.getDwarfHatColor()) + 1);
+            }
+        }
+        for(Map.Entry<String, Integer> entry : hatsColorCount.entrySet())
+        {
+            for(int i = 0; i < dwarfsList.size(); i++)
+            {
+                if(dwarfsList.get(i).getDwarfHatColor().equals(entry.getKey()))
+                {
+                    dwarfsList.get(i).setHatColorCount(entry.getValue());
+                }
+            }
+        }
+        return dwarfsList;
+    }
+    public static void printFinalState( List<SnowwhiteDwarf> dwarfsList)
+    {
+        for(SnowwhiteDwarf dwarf : dwarfsList)
+        {
+            System.out.printf("(%s) %s <-> %d%n", dwarf.getDwarfHatColor(), dwarf.getDwarfName(), dwarf.getDwarfPhysics());
+        }
+    }
+}
+class SnowwhiteDwarf
+{
+    //{dwarfName} <:> {dwarfHatColor} <:> {dwarfPhysics}
+    private String dwarfName;
+    private String dwarfHatColor;
+    private int dwarfPhysics;
+    private int hatColorCount;
+
+    SnowwhiteDwarf(String dwarfName, String dwarfHatColor, int dwarfPhysics, int hatColorCount) {
+        this.dwarfName = dwarfName;
+        this.dwarfHatColor = dwarfHatColor;
+        this.dwarfPhysics = dwarfPhysics;
+        this.hatColorCount = hatColorCount;
+    }
+
+
+    public String getDwarfName() {
+        return dwarfName;
+    }
+
+    public void setDwarfName(String dwarfName) {
+        this.dwarfName = dwarfName;
+    }
+
+    public String getDwarfHatColor() {
+        return dwarfHatColor;
+    }
+
+    public void setDwarfHatColor(String dwarfHatColor) {
+        this.dwarfHatColor = dwarfHatColor;
+    }
+
+    public int getDwarfPhysics() {
+        return dwarfPhysics;
+    }
+
+    public void setDwarfPhysics(int dwarfPhysics) {
+        this.dwarfPhysics = dwarfPhysics;
+    }
+
+    public int getHatColorCount() {
+        return hatColorCount;
+    }
+
+    public void setHatColorCount(int hatColorCount) {
+        this.hatColorCount = hatColorCount;
+    }
+}
+
+
