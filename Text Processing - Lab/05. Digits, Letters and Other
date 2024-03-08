@@ -1,0 +1,36 @@
+import java.util.Scanner;
+
+public class _05_Digits_Letters_and_Other
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        find_Digits_Letters_Others_AndPrintFinalState(input);
+    }
+    public static void find_Digits_Letters_Others_AndPrintFinalState(String input)
+    {
+        StringBuilder digits = new StringBuilder();
+        StringBuilder letters = new StringBuilder();
+        StringBuilder others = new StringBuilder();
+        for(int i = 0; i < input.length(); i++)
+        {
+            char current = input.charAt(i);
+            if(Character.isDigit(current))
+            {
+                digits.append(current);
+            }
+            else if(Character.isLetter(current))
+            {
+                letters.append(current);
+            }
+            else
+            {
+                others.append(current);
+            }
+        }
+        System.out.println(digits.toString().trim());
+        System.out.println(letters.toString().trim());
+        System.out.println(others.toString().trim());
+    }
+}
