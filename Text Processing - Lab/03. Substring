@@ -1,0 +1,20 @@
+import java.util.Scanner;
+
+public class _03_Substring
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String pattern = scanner.nextLine();
+        String input = scanner.nextLine();
+        printFinalInputWithoutPattern(pattern, input);
+    }
+    public static void printFinalInputWithoutPattern(String pattern, String input)
+    {
+        while(input.contains(pattern))
+        {
+            input = input.replace(pattern, "");
+        }
+        System.out.println(input);
+    }
+}
