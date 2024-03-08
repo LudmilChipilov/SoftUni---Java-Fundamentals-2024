@@ -1,0 +1,23 @@
+import java.util.Scanner;
+
+public class _02_Repeat_Strings
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String[] input = scanner.nextLine().split(" ");
+        cteateAndPrintRepeatedString(input);
+    }
+    public static void cteateAndPrintRepeatedString(String[] input)
+    {
+        StringBuilder sb = new StringBuilder();
+        for(String str : input)
+        {
+            for(int i = 0; i < str.length(); i++)
+            {
+                sb.append(str);
+            }
+        }
+        System.out.println(sb.toString().trim());
+    }
+}
