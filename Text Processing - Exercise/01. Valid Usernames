@@ -1,0 +1,35 @@
+import java.util.Scanner;//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class _01_Valid_Usernames
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String[] input = scanner.nextLine().split(", ");
+        checkIsValidUsernameAndPrintFinalState(input);
+    }
+    public static void checkIsValidUsernameAndPrintFinalState(String[] input)
+    {
+        for(String str : input)
+        {
+            if(str.length() >= 3 && str.length() <= 16)
+            {
+                boolean isValid = false;
+                for(int i = 0; i < str.length(); i++)
+                {
+                    char ch = str.charAt(i);
+                    if(!Character.isLetter(ch) && !Character.isDigit(ch) && ch != '-' && ch != '_')
+                    {
+                        isValid = true;
+                        break;
+                    }
+                }
+                if(!isValid)
+                {
+                    System.out.println(str);
+                }
+            }
+        }
+    }
+}
+
