@@ -1,0 +1,20 @@
+import java.util.Scanner;
+
+public class _03_Extract_File
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        extractAndPrintNameAndExtension(input);
+    }
+    public static void extractAndPrintNameAndExtension(String input)
+    {
+        String[] comArgs = input.split("\\\\");
+        String[] name_Extension = comArgs[comArgs.length - 1].split("\\.");
+        String name = name_Extension[0];
+        String extension  = name_Extension[1];
+        System.out.printf("File name: %s%n", name);
+        System.out.printf("File extension: %s%n", extension);
+    }
+}
