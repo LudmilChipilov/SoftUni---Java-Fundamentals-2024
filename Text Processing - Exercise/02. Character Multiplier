@@ -1,0 +1,52 @@
+import java.util.Scanner;
+
+public class _02_Character_Multiplier
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String[] items = scanner.nextLine().split(" ");
+        String first = items[0];
+        String second = items[1];
+        calaculateSumMultiplyEqualsIndexies(first, second);
+    }
+    public static void calaculateSumMultiplyEqualsIndexies(String first, String second)
+    {
+        int sumTotal= 0;
+        if(first.length() >= second.length())
+        {
+            for(int i = 0; i < first.length(); i++)
+            {
+                int digitFirst = first.charAt(i);
+
+                if(i < second.length())
+                {
+                    int digitSecond = second.charAt(i);
+                    sumTotal += digitFirst * digitSecond;
+                }
+                else
+                {
+                    sumTotal += digitFirst;
+                }
+            }
+        }
+        else
+        {
+            for(int i = 0; i < second.length(); i++)
+            {
+                int digitSecond = second.charAt(i);
+
+                if(i < first.length())
+                {
+                    int digitFirst = first.charAt(i);
+                    sumTotal += digitFirst * digitSecond;
+                }
+                else
+                {
+                    sumTotal += digitSecond;
+                }
+            }
+        }
+        System.out.println(sumTotal);
+    }
+}
