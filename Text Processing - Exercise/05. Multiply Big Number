@@ -1,0 +1,72 @@
+import java.util.Scanner;
+import java.lang.Long;
+public class _05_Multiply_Big_Number
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String bigNumber = scanner.nextLine().replace(" ", "");
+
+        bigNumber = checkIfBigNumberStartWithZero(bigNumber);
+        int multiplier = Integer.parseInt(scanner.nextLine());
+        if(multiplier == 0)
+        {
+            System.out.println(0);
+            return;
+        }
+        multiplyBigNumberAndPrint(bigNumber, multiplier);
+    }
+    public static String checkIfBigNumberStartWithZero(String bigNumber)
+    {
+        int counter = 0;
+        if(bigNumber.charAt(0) == '0')
+        {
+            for(int i = 0; i < bigNumber.length(); i++)
+            {
+                char ch = bigNumber.charAt(i);
+                if(ch == '0')
+                {
+                    counter++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        bigNumber = bigNumber.substring(counter);
+        return  bigNumber;
+    }
+
+    public static void multiplyBigNumberAndPrint(String bigNumber, int multiplier)
+    {
+        int reminder = 0;
+        String numToString = "";
+        while(true)
+        {
+            if(bigNumber.length() == 1)
+            {
+                int finalNumber = Integer.parseInt(bigNumber);
+                int finResult = finalNumber*multiplier + reminder;
+                numToString = String.valueOf(finResult) + numToString;
+                break;
+            }
+            int lastDigit = Integer.parseInt(String.valueOf(bigNumber.charAt(bigNumber.length() - 1)));
+
+            int currentResult = lastDigit * multiplier + reminder;
+
+            if(currentResult > 9)
+            {
+                reminder = currentResult/10;
+            }
+            else if(currentResult <= 9)
+            {
+                reminder = 0;
+            }
+            numToString = String.valueOf(currentResult % 10) + numToString;
+
+            bigNumber = bigNumber.substring(0, bigNumber.length() - 1).trim();
+        }
+        System.out.println(numToString.replace(" ", ""));
+    }
+}
