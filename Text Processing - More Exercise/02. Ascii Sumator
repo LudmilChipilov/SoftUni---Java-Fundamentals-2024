@@ -1,0 +1,38 @@
+import java.util.Scanner;
+
+public class _02_Ascii_Sumator
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        char firstChar = scanner.nextLine().charAt(0);
+        char secondChar = scanner.nextLine().charAt(0);
+        String input = scanner.nextLine();
+        calculateSumBetweenCharsAndPrint(firstChar, secondChar, input);
+    }
+    public static void calculateSumBetweenCharsAndPrint(char firstChar, char secondChar, String input)
+    {
+        int sum = 0;
+        for(int i = 0; i < input.length(); i++)
+        {
+            char ch = input.charAt(i);
+            if(firstChar > secondChar)
+            {
+                if(ch > secondChar && ch < firstChar)
+                {
+                    int currentSum = (int)ch;
+                    sum += currentSum;
+                }
+            }
+            else
+            {
+                if(ch < secondChar && ch > firstChar)
+                {
+                    int currentSum = (int)ch;
+                    sum += currentSum;
+                }
+            }
+        }
+        System.out.println(sum);
+    }
+}
