@@ -1,0 +1,46 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _04_Morse_Code_Translator
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine().replace("|", " ");
+        String[] items = input.split("\\s{2}");
+        String[] code
+                = {".-", "-...", "-.-.", "-..", ".",
+                "..-.", "--.", "....", "..", ".---",
+                "-.-", ".-..", "--", "-.", "---",
+                ".--.", "--.-", ".-.", "...", "-",
+                "..-", "...-", ".--", "-..-", "-.--",
+                "--.."};
+         find_Morse_Print_CapitalLetter(items, code);
+    }
+    public static void find_Morse_Print_CapitalLetter( String[] items,   String[] code)
+    {
+        List<String> finalString = new ArrayList<>();
+        for(String item : items)
+        {
+            String[] current = item.split(" ");
+            String str = "";
+            for(int i = 0; i < current.length; i++)
+            {
+
+                String morse = current[i];
+                for(int j = 0; j < code.length; j++)
+                {
+                    if(code[j].equals(morse))
+                    {
+                        char toAdd = (char)(j + 65);
+                        str += toAdd;
+                    }
+                }
+            }
+            finalString.add(str.replace(" ", ""));
+        }
+
+        System.out.println(String.join(" ", finalString));
+    }
+}
