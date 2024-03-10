@@ -1,0 +1,44 @@
+import java.util.Scanner;
+
+public class _05_HTML
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String title = scanner.nextLine();
+        printTitle(title);
+        String content = scanner.nextLine();
+        printContent(content);
+        String command = scanner.nextLine();
+        while(!command.equals("end of comments"))
+        {
+            String comment = command;
+            printComment(comment);
+             command = scanner.nextLine();
+        }
+    }
+    public static void printTitle(String title)
+    {
+
+        System.out.println("<h1>");
+        System.out.println("    " + title);
+        System.out.println("</h1>");
+
+    }
+    public static void printContent(String content)
+    {
+
+        System.out.println("<article>");
+        System.out.println("    " + content);
+        System.out.println("</article>");
+
+    }
+    public static void printComment(String comment)
+    {
+
+        System.out.println("<div>");
+        System.out.println("    " + comment);
+        System.out.println("</div>");
+
+    }
+}
