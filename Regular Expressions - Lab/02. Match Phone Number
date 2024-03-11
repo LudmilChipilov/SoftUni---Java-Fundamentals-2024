@@ -1,0 +1,24 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class _02_Match_Phone_Number
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        final String regex = "\\+359(?<sep>\\s|-)2\\k<sep>[\\d]{3}\\k<sep>[\\d]{4}\\b";
+        final String string = scanner.nextLine();
+
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(string);
+        List<String> phoneNumbers = new ArrayList<>();
+        while (matcher.find())
+        {
+            phoneNumbers.add(matcher.group());
+        }
+        System.out.println(String.join(", ", phoneNumbers));
+    }
+}
