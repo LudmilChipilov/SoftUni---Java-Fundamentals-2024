@@ -1,0 +1,24 @@
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class _03_Match_Dates
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        final String regex = "\\b(?<day>[\\d]{2})(?<sep>[\\.\\-\\/])(?<month>[A-Z][a-z]+)\\k<sep>(?<year>[\\d]{4})\\b";
+        final String string = scanner.nextLine();
+
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(string);
+
+        while (matcher.find())
+        {
+            String day = matcher.group("day");
+            String month = matcher.group("month");
+            String year = matcher.group("year");
+            System.out.printf("Day: %s, Month: %s, Year: %s%n", day, month, year);
+        }
+    }
+}
