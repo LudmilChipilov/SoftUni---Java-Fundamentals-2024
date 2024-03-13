@@ -1,0 +1,33 @@
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class _02_SoftUni_Bar_Income
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String command = scanner.nextLine();
+        double totalIncome = 0;
+        while(!command.equals("end of shift"))
+        {
+            final String regex =  "%(?<name>[A-Z][a-z]*)%[^|$%.]*?<(?<product>[\\w]+)>[^|$%.]*?\\|(?<count>[\\d]+)\\|[^|$%.]*?(?<price>[\\d]+\\.?[\\d]*)\\$";
+            final String string = command;
+
+            final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+            final Matcher matcher = pattern.matcher(string);
+
+            while (matcher.find())
+            {
+               String name = matcher.group("name");
+               String product = matcher.group("product");
+               int count = Integer.parseInt(matcher.group("count"));
+               double price = Double.parseDouble(matcher.group("price"));
+               totalIncome += price * count;
+               System.out.printf("%s: %s - %.2f%n", name, product, price * count);
+            }
+            command = scanner.nextLine();
+        }
+        System.out.printf("Total income: %.2f", totalIncome);
+    }
+}
