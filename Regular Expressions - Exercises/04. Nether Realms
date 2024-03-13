@@ -1,0 +1,74 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class _04_Nether_Realms
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String[] input = scanner.nextLine().split(",");
+       for(int i = 0; i < input.length; i++)
+       {
+           String current = input[i].trim();
+           current = current.replace(" ", "");
+           int health = demonsHealth(current);
+           double damage = demonsDamage(current);
+           print(current, health, damage);
+       }
+    }
+    public static int demonsHealth(String current)
+    {
+        int health = 0;
+        String healthStr = "";
+        final String regex = "(?<health>[^0-9+\\-*\\/.\\s]+)";
+        final String string = current;
+
+        final Pattern pattern = Pattern.compile(regex);
+        final Matcher matcher = pattern.matcher(string);
+
+        while (matcher.find())
+        {
+            healthStr += matcher.group("health");
+        }
+        for(int i = 0; i < healthStr.length(); i++)
+        {
+            health += (int)healthStr.charAt(i);
+        }
+        return health;
+    }
+    public static double demonsDamage(String current)
+    {
+        double damage = 0;
+
+
+        final String regex = "(?<damage>[-]?[\\d]+[\\.]?[\\d]*)";
+        final String string = current;
+
+        final Pattern pattern = Pattern.compile(regex);
+        final Matcher matcher = pattern.matcher(string);
+
+        while (matcher.find())
+        {
+            damage += Double.parseDouble(matcher.group("damage"));
+        }
+        for(int i = 0; i < current.length(); i++)
+        {
+            if(current.charAt(i) == '*')
+            {
+                damage *= 2;
+            }
+            if(current.charAt(i) == '/')
+            {
+                damage /= 2;
+            }
+        }
+        return damage;
+    }
+    public static void print(String current, int health, double damage)
+    {
+        System.out.printf("%s - %d health, %.2f damage%n", current, health, damage);
+    }
+}
