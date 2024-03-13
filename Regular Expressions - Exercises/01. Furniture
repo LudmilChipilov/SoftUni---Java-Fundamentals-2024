@@ -1,0 +1,35 @@
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class _01_Furniture
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String command = scanner.nextLine();
+        double totalPrice = 0;
+        System.out.println("Bought furniture:");
+        while(!command.equals("Purchase"))
+        {
+            final String regex = ">>(?<name>[A-Z]+[a-z]*)<<(?<price>[\\d]+[\\\\.]?[\\d]+)!(?<quantity>[\\d]+)\\b";
+            final String string = command;
+
+            final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+            final Matcher matcher = pattern.matcher(string);
+
+            while (matcher.find())
+            {
+               String name = matcher.group("name");
+               double price = Double.parseDouble(matcher.group("price"));
+               int quantity = Integer.parseInt(matcher.group("quantity"));
+               totalPrice += price*quantity;
+               System.out.println(name);
+            }
+            command = scanner.nextLine();
+        }
+        System.out.printf("Total money spend: %.2f%n", totalPrice);
+    }
+}
