@@ -1,0 +1,92 @@
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class _03_Post_Office
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String firstPart = "";
+        List<String> secondPart = new ArrayList<>();
+        String[] items = scanner.nextLine().split("\\|");
+        String one = items[0];
+        String two = items[1];
+        String three = items[2];
+        firstPart = findCapitalsLetters_Part_One(one);
+        secondPart =  findSecondPart(two);
+        find_ThirthPart_Words_Print(three, firstPart, secondPart);
+    }
+    public static String findCapitalsLetters_Part_One(String one)
+    {
+        String firstPart = "";
+        final String regex = "([#$%*&])(?<capLetters>[A-Z]+)\\1";
+        final String string = one;
+
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(string);
+
+        while (matcher.find())
+        {
+
+            firstPart = matcher.group("capLetters");
+        }
+        return firstPart;
+    }
+    public static List<String> findSecondPart(String two)
+    {
+        List<String> secondPart = new ArrayList<>();
+        final String regex = "[\\d]{2}:[\\d]{2}";
+        final String string = two;
+
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(string);
+
+        while (matcher.find())
+        {
+            String[] temp = matcher.group().split(":");
+            int asciiCode = Integer.parseInt(temp[0]);
+            if(!secondPart.contains(matcher.group()) && asciiCode >= 65 && asciiCode <= 90)
+            {
+                secondPart.add(matcher.group());
+            }
+
+        }
+        return secondPart;
+    }
+    public static void find_ThirthPart_Words_Print(String three, String firstPart, List<String> secondPart)
+    {
+        String[] words = three.split("\\s+");
+
+        boolean isPrinted = false;
+       for(int i = 0; i < firstPart.length(); i++)
+       {
+           for(int j = 0; j < secondPart.size(); j++)
+           {
+               String[] currTwo = secondPart.get(j).split(":");
+               int asciiCode = Integer.parseInt(currTwo[0]);
+               int wordLength = Integer.parseInt(currTwo[1]) + 1;
+               if(firstPart.charAt(i) != (char)asciiCode)
+               {
+                   continue;
+               }
+               for(String word : words)
+               {
+                   if(word.charAt(0) == firstPart.charAt(i) && word.length() == wordLength)
+                   {
+                       System.out.println(word);
+                       isPrinted = true;
+                       break;
+                   }
+               }
+               if(isPrinted)
+               {
+                   break;
+               }
+           }
+       }
+    }
+}
