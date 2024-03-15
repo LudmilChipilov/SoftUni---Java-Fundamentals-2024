@@ -1,0 +1,61 @@
+import java.util.Scanner;
+
+public class _01_The_Imitation_Game
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String message = scanner.nextLine();
+
+        String command = scanner.nextLine();
+        while(!command.equals("Decode"))
+        {
+            String[] comArgs = command.split("\\|");
+            String first = comArgs[0];
+            if(first.equals("Move"))
+            {
+                int number = Integer.parseInt(comArgs[1]);
+                message = moveCommand(message, number);
+            }
+            else if(first.equals("Insert"))
+            {
+                int index = Integer.parseInt(comArgs[1]);
+                String value = comArgs[2];
+                message = insertCommand(message, index, value);
+            }
+            else if(first.equals("ChangeAll"))
+            {
+                String substring = comArgs[1];
+                String replacement = comArgs[2];
+                if(message.contains(substring))
+                {
+                    message = message.replace(substring, replacement);
+                }
+
+            }
+            command = scanner.nextLine();
+        }
+        System.out.printf("The decrypted message is: %s%n", message);
+    }
+    public static String moveCommand(String message, int number)
+    {
+         if(number > 0 && number <= message.length())
+         {
+             String sub1 = message.substring(0, number);
+             String sub2 = message.substring(number);
+             message = sub2 + sub1;
+         }
+         return message;
+    }
+    public static String insertCommand(String message, int index, String value)
+    {
+        if(index >= 0 && index <= message.length())
+        {
+            StringBuilder sb = new StringBuilder();
+            sb = new StringBuilder(message);
+            sb.insert(index, value);
+            message = sb.toString().trim();
+        }
+        return message;
+    }
+}
