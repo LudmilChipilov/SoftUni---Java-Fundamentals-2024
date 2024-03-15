@@ -1,0 +1,43 @@
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class _02_Rage_Quit
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine().toUpperCase();
+        findMatchesAndPrint(input);
+    }
+    public static void findMatchesAndPrint(String input)
+    {
+
+        StringBuilder sb = new StringBuilder();
+
+        final String regex = "(?<word>[^\\d]+)(?<count>[\\d]+)";
+        final String string = input;
+
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(string);
+
+        while (matcher.find())
+        {
+            String word = matcher.group("word");
+            int count = Integer.parseInt(matcher.group("count"));
+
+            for(int i = 0; i < count; i++)
+            {
+                sb.append(word);
+            }
+
+
+        }
+
+        System.out.printf("Unique symbols used: %d%n", sb.chars().distinct().count());
+        System.out.println(sb.toString().trim());
+    }
+}
