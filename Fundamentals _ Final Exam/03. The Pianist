@@ -1,0 +1,149 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _03_The_Pianist
+{
+    public static void main(String[] args)
+    {
+        List<Pianist_Exam> arrayList = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        int n = Integer.parseInt(scanner.nextLine());
+        for(int i = 0; i < n; i ++)
+        {
+            String[] items = scanner.nextLine().split("\\|");
+            String piece = items[0];
+            String composer = items[1];
+            String key = items[2];
+            Pianist_Exam pianistExam = new Pianist_Exam(piece, composer, key);
+            arrayList.add(pianistExam);
+        }
+        String commands = scanner.nextLine();
+        while(!commands.equals("Stop"))
+        {
+            String[] comArgs = commands.split("\\|");
+            String command = comArgs[0];
+            String piece = comArgs[1];
+            if(command.equals("Add"))
+            {
+                String composer = comArgs[2];
+                String key = comArgs[3];
+                arrayList = addInexistingPiece(arrayList, piece, composer, key);
+            }
+            else if(command.equals("Remove"))
+            {
+                arrayList = removeExistingPiece(arrayList, piece);
+            }
+            else if(command.equals("ChangeKey"))
+            {
+                String newKey = comArgs[2];
+                arrayList = changeKeyOfExistingPiece(arrayList, piece, newKey);
+            }
+            commands = scanner.nextLine();
+        }
+        printFinalState(arrayList);
+    }
+    public static List<Pianist_Exam> addInexistingPiece(List<Pianist_Exam> arrayList,  String piece, String composer, String key)
+    {
+        boolean isExist = false;
+        for(Pianist_Exam list : arrayList)
+        {
+            if(list.getPiece().equals(piece))
+            {
+                isExist = true;
+                System.out.printf("%s is already in the collection!%n", list.getPiece());
+            }
+        }
+        if(!isExist)
+        {
+            Pianist_Exam pianistExam = new Pianist_Exam(piece, composer, key);
+            arrayList.add(pianistExam);
+            System.out.printf("%s by %s in %s added to the collection!%n", piece, composer, key);
+        }
+        return arrayList;
+    }
+    public static List<Pianist_Exam> removeExistingPiece(List<Pianist_Exam> arrayList, String piece)
+    {
+        boolean isExist = false;
+        for(Pianist_Exam list : arrayList)
+        {
+            if(list.getPiece().equals(piece))
+            {
+                isExist = true;
+            }
+        }
+        if(isExist)
+        {
+            arrayList.removeIf(x -> x.getPiece().equals(piece));
+            System.out.printf("Successfully removed %s!%n", piece);
+        }
+        else
+        {
+            System.out.printf("Invalid operation! %s does not exist in the collection.%n", piece);
+        }
+        return arrayList;
+    }
+    public static List<Pianist_Exam> changeKeyOfExistingPiece(List<Pianist_Exam> arrayList, String piece, String newKey)
+    {
+        boolean isExist = false;
+        for(int i = 0; i < arrayList.size(); i++)
+        {
+            if(arrayList.get(i).getPiece().equals(piece))
+            {
+                arrayList.get(i).setKey(newKey);
+                isExist = true;
+                System.out.printf("Changed the key of %s to %s!%n", piece, newKey);
+                break;
+            }
+        }
+        if(!isExist)
+        {
+            System.out.printf("Invalid operation! %s does not exist in the collection.%n", piece);
+        }
+        return arrayList;
+    }
+    public static void printFinalState(List<Pianist_Exam> arrayList)
+    {
+        for(Pianist_Exam list : arrayList)
+        {
+            System.out.printf("%s -> Composer: %s, Key: %s%n", list.getPiece(), list.getComposer(), list.getKey());
+        }
+    }
+}
+class Pianist_Exam
+{
+    //{piece}|{composer}|{key}
+   private String piece;
+   private String composer;
+   private String key;
+
+    Pianist_Exam(String piece, String composer, String key) {
+        this.piece = piece;
+        this.composer = composer;
+        this.key = key;
+    }
+
+    public String getPiece() {
+        return piece;
+    }
+
+    public void setPiece(String piece) {
+        this.piece = piece;
+    }
+
+    public String getComposer() {
+        return composer;
+    }
+
+    public void setComposer(String composer) {
+        this.composer = composer;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+}
