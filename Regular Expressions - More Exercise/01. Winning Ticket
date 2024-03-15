@@ -1,0 +1,107 @@
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class _01_Winning_Ticket
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String[] items = scanner.nextLine().split("\\s*,\\s*");
+        for(int i = 0; i < items.length; i++)
+        {
+            String current = items[i].trim();
+            if(current.length() != 20)
+            {
+                System.out.println("invalid ticket");
+                continue;
+            }
+            String left = current.substring(0, 10);
+            String right = current.substring(10);
+            String leftSide = createLeftSide(left);
+            String rightSide = createRightSide(right);
+            String ticket = "";
+            ticket = String.valueOf((char)34) + current + String.valueOf((char)34);
+            if(leftSide.length() == 0 || rightSide.length() == 0)
+            {
+                System.out.printf("ticket %s - no match%n", ticket);
+                continue;
+            }
+            checkLeftSideAndRightSide(leftSide, rightSide, current);
+        }
+    }
+    public static String createLeftSide(String left)
+    {
+        String leftSide = "";
+        final String regex = "[@]{6,10}|[#]{6,10}|[$]{6,10}|[\\\\^]{6,10}";
+        final String string = left;
+
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(string);
+
+        if(matcher.find())
+        {
+            leftSide = matcher.group();
+        }
+
+        return leftSide;
+    }
+    public static String createRightSide(String right)
+    {
+        String rightSide = "";
+        final String regex = "[@]{6,10}|[#]{6,10}|[$]{6,10}|[\\\\^]{6,10}";
+        final String string = right;
+
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(string);
+
+        if(matcher.find())
+        {
+            rightSide = matcher.group();
+        }
+        return rightSide;
+    }
+    public static void checkLeftSideAndRightSide(String leftSide, String rightSide, String current)
+    {
+        String ticket = "";
+        ticket = String.valueOf((char)34) + current + String.valueOf((char)34);
+        boolean isValid = false;
+        int minLength = Math.min(leftSide.length(), rightSide.length());
+        for(int i = 0; i < minLength; i++)
+        {
+            char ch1 = leftSide.charAt(i);
+            char ch2 = rightSide.charAt(i);
+            if(ch1 != ch2)
+            {
+                isValid = true;
+                break;
+            }
+        }
+        if(leftSide.length() >= 6 && rightSide.length() >= 6 && !isValid)
+        {
+
+            String winSymbol = "";
+            char ch = leftSide.charAt(0);
+            if(ch == '@' || ch == '#' || ch == '$' || ch == '^')
+            {
+                winSymbol = String.valueOf(leftSide.charAt(0));
+            }
+            if(minLength < 10)
+            {
+
+                System.out.printf("ticket %s - %d%s%n", ticket, minLength, winSymbol);
+            }
+            else
+            {
+
+                System.out.printf("ticket %s - %d%s Jackpot!%n", ticket, minLength, winSymbol);
+            }
+        }
+        else
+        {
+            System.out.printf("ticket %s - no match%n", ticket);
+        }
+    }
+}
