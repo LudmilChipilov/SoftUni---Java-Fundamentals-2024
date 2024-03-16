@@ -1,0 +1,63 @@
+import java.util.Scanner;
+
+public class _01_World_Tour
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        String initial = input;
+        String command = scanner.nextLine();
+        while(!command.equals("Travel"))
+        {
+            String[] comArgs = command.split(":");
+            String first = comArgs[0];
+            if(first.equals("Add Stop"))
+            {
+                int index = Integer.parseInt(comArgs[1]);
+                String toAdd = comArgs[2];
+                input = addStringIfValidIndex(input, index, toAdd);
+            }
+            else if(first.equals("Remove Stop"))
+            {
+                int startIndex = Integer.parseInt(comArgs[1]);
+                int endIndex = Integer.parseInt(comArgs[2]);
+                input = removeSubstringIfValidIndexies(input, startIndex, endIndex);
+            }
+            else if(first.equals("Switch"))
+            {
+                String oldString = comArgs[1];
+                String newString = comArgs[2];
+                if(input.contains(oldString))
+                {
+                    input = input.replace(oldString, newString);
+                }
+            }
+            System.out.println(input);
+            command = scanner.nextLine();
+        }
+        System.out.printf("Ready for world tour! Planned stops: %s%n", input);
+    }
+    public static String addStringIfValidIndex(String input, int index, String toAdd)
+    {
+        if(index >= 0 && index <= input.length())
+        {
+            StringBuilder sb = new StringBuilder();
+            sb = new StringBuilder(input);
+            sb.insert(index, toAdd);
+            input = sb.toString().trim();
+        }
+        return input;
+    }
+    public static String removeSubstringIfValidIndexies(String input, int startIndex, int endIndex)
+    {
+        if(startIndex <= endIndex && startIndex > - 1 && endIndex < input.length())
+        {
+            StringBuilder sb = new StringBuilder();
+            sb = new StringBuilder(input);
+            sb.delete(startIndex, endIndex + 1);
+            input = sb.toString().trim();
+        }
+        return input;
+    }
+}
