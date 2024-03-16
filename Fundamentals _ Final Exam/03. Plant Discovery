@@ -1,0 +1,177 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+import java.lang.Double;
+
+public class _03_Plant_Discovery
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<PlantDiscovery> plantDiscoveries = new ArrayList<>();
+        int n = Integer.parseInt(scanner.nextLine());
+        for(int i = 0; i < n; i ++)
+        {
+            String[] items = scanner.nextLine().split("<->");
+            plantDiscoveries = createNewPlant(plantDiscoveries, items);
+        }
+        String command = scanner.nextLine();
+        while(!command.equals("Exhibition"))
+        {
+            String[] comArgs = command.split(": ");
+            String first = comArgs[0];
+
+            if(first.equals("Rate"))
+            {
+                String[] comds = comArgs[1].split(" - ");
+                plantDiscoveries = addRatingToPlant(plantDiscoveries, comds);
+            }
+            else if(first.equals("Update"))
+            {
+                String[] comds = comArgs[1].split(" - ");
+                plantDiscoveries = updateRarityOfPlant(plantDiscoveries, comds);
+            }
+            else if(first.equals("Reset"))
+            {
+                String plant = comArgs[1];
+                removeRatingsOfExistingPlant(plantDiscoveries, plant);
+            }
+            command = scanner.nextLine();
+        }
+       printFinalState(plantDiscoveries);
+    }
+    public static List<PlantDiscovery> createNewPlant(List<PlantDiscovery> plantDiscoveries,  String[] items)
+    {
+        String plant = items[0];
+        int ratity = Integer.parseInt(items[1]);
+        List<Double> ratings = new ArrayList<>();
+        PlantDiscovery plantDiscovery = new PlantDiscovery(plant, ratity, ratings);
+        plantDiscoveries.add(plantDiscovery);
+        return plantDiscoveries;
+    }
+    public static List<PlantDiscovery> addRatingToPlant(List<PlantDiscovery> plantDiscoveries,  String[] comds)
+    {
+        boolean error = false;
+        String plant = comds[0];
+        double rating = Double.parseDouble(comds[1]);
+        for(int i = 0; i < plantDiscoveries.size(); i++)
+        {
+            if(plantDiscoveries.get(i).getPlant().equals(plant))
+            {
+                error = true;
+                List<Double> temp = new ArrayList<>();
+                temp = plantDiscoveries.get(i).getRatings();
+                temp.add(rating);
+                plantDiscoveries.get(i).setRatings(temp);
+            }
+        }
+        if(!error)
+        {
+            System.out.println("error");
+        }
+        return plantDiscoveries;
+    }
+    public static List<PlantDiscovery> updateRarityOfPlant(List<PlantDiscovery> plantDiscoveries,  String[] comds)
+    {
+        boolean error = false;
+        String plant = comds[0];
+        int rarity = Integer.parseInt(comds[1]);
+        for(int i = 0; i < plantDiscoveries.size(); i++)
+        {
+            if(plantDiscoveries.get(i).getPlant().equals(plant))
+            {
+                error = true;
+                plantDiscoveries.get(i).setRarity(rarity);
+            }
+        }
+        if(!error)
+        {
+            System.out.println("error");
+        }
+        return plantDiscoveries;
+    }
+    public static List<PlantDiscovery> removeRatingsOfExistingPlant(List<PlantDiscovery> plantDiscoveries,  String plant)
+    {
+        boolean error = false;
+
+        for(int i = 0; i < plantDiscoveries.size(); i++)
+        {
+            if(plantDiscoveries.get(i).getPlant().equals(plant))
+            {
+                error = true;
+                List<Double> temp = new ArrayList<>();
+                plantDiscoveries.get(i).setRatings(temp);
+                break;
+            }
+        }
+        if(!error)
+        {
+            System.out.println("error");
+        }
+        return plantDiscoveries;
+    }
+    public static void printFinalState(List<PlantDiscovery> plantDiscoveries)
+    {
+        System.out.println("Plants for the exhibition:");
+        for(PlantDiscovery plant : plantDiscoveries)
+        {
+
+            double sum = 0;
+            double average = 0;
+            if(plant.getRatings().size() > 0)
+            {
+                for(Double rating : plant.getRatings())
+                {
+                    sum += rating;
+                }
+                average = sum / plant.getRatings().size();
+            }
+            else
+            {
+                average = 0;
+
+            }
+
+
+            System.out.printf("- %s; Rarity: %d; Rating: %.2f%n",
+                    plant.getPlant(), plant.getRarity(), average);
+        }
+    }
+}
+class PlantDiscovery
+{
+    private String plant;
+    private int rarity;
+    private List<Double> ratings;
+
+    PlantDiscovery(String plant, int rarity, List<Double> ratings) {
+        this.plant = plant;
+        this.rarity = rarity;
+        this.ratings = ratings;
+    }
+
+    public String getPlant() {
+        return plant;
+    }
+
+    public void setPlant(String plant) {
+        this.plant = plant;
+    }
+
+    public int getRarity() {
+        return rarity;
+    }
+
+    public void setRarity(int rarity) {
+        this.rarity = rarity;
+    }
+
+    public List<Double> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Double> ratings) {
+        this.ratings = ratings;
+    }
+}
