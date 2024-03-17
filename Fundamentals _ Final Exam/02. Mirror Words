@@ -1,0 +1,64 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class _02_Mirror_Words
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        findMirrorWordsAndPrint(input);
+
+    }
+    public static void findMirrorWordsAndPrint(String input)
+    {
+        List<String> mirrorWords = new ArrayList<>();
+        int counter = 0;
+        final String regex = "([@#]{1})(?<wordOne>[A-Za-z]{3,})\\1\\1(?<wordTwo>[A-Za-z]{3,})\\1";
+        final String string = input;
+
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(string);
+
+        while (matcher.find())
+        {
+            counter++;
+            String wordOne = matcher.group("wordOne");
+            String wordTwo = matcher.group("wordTwo");
+            String mirror = "";
+            StringBuilder sb = new StringBuilder();
+            for(int i = wordTwo.length() - 1; i >= 0; i--)
+            {
+                sb.append(wordTwo.charAt(i));
+            }
+            sb.trimToSize();
+            mirror = sb.toString();
+            if(wordOne.equals(mirror))
+            {
+                String toAdd = wordOne + " " + "<=>" + " " + wordTwo;
+                mirrorWords.add(toAdd);
+            }
+        }
+        if(counter == 0)
+        {
+            System.out.println("No word pairs found!");
+        }
+        if(counter > 0)
+        {
+            System.out.printf("%s word pairs found!%n", counter);
+        }
+        if(mirrorWords.size() == 0)
+        {
+            System.out.println("No mirror words!");
+        }
+        if(mirrorWords.size() > 0)
+        {
+            System.out.println("The mirror words are:");
+            System.out.println(String.join(", ", mirrorWords));
+        }
+    }
+}
