@@ -1,0 +1,186 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _03_Heroes_of_Code_and_Logic_VII {
+    public static void main(String[] args) {
+        List<HeroesOfCode> heroesList = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        int n = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < n; i++)
+        {
+            String[] items = scanner.nextLine().split(" ");
+            heroesList = createNewHero(heroesList, items);
+        }
+        String command = scanner.nextLine();
+        while(!command.equals("End"))
+        {
+            String[] comArgs = command.split(" - ");
+            String first = comArgs[0];
+            String heroName = comArgs[1];
+            if(first.equals("CastSpell"))
+            {
+                int manaPoints = Integer.parseInt(comArgs[2]);
+                String spellName = comArgs[3];
+                heroesList = castSpellManaPoints(heroesList, heroName, manaPoints, spellName);
+            }
+            else if(first.equals("TakeDamage"))
+            {
+                int hitDamage = Integer.parseInt(comArgs[2]);
+                String attackerName = comArgs[3];
+                heroesList = takeDamageOfAttacker(heroesList, heroName, hitDamage, attackerName);
+            }
+            else if(first.equals("Recharge"))
+            {
+                int amountMana = Integer.parseInt(comArgs[2]);
+                heroesList = rechargeManaPoints(heroesList, heroName, amountMana);
+            }
+            else if(first.equals("Heal"))
+            {
+                int amountHit = Integer.parseInt(comArgs[2]);
+                heroesList = healHitPoints(heroesList, heroName, amountHit);
+            }
+            command = scanner.nextLine();
+        }
+        printFinalState(heroesList);
+    }
+    public static List<HeroesOfCode> createNewHero(List<HeroesOfCode> heroesList, String[] items)
+    {
+        String heroName = items[0];
+        int hitPoints = Integer.parseInt(items[1]);
+        int manaPoints = Integer.parseInt(items[2]);
+        HeroesOfCode hero = new HeroesOfCode(heroName, hitPoints, manaPoints);
+        heroesList.add(hero);
+        return heroesList;
+    }
+    public static List<HeroesOfCode> castSpellManaPoints(List<HeroesOfCode> heroesList, String heroName, int manaPoints, String spellName)
+    {
+        for(int i = 0; i < heroesList.size(); i++)
+        {
+            if(heroesList.get(i).getHeroName().equals(heroName))
+            {
+                int currentMana = heroesList.get(i).getManaPoints();
+                if(currentMana >= manaPoints)
+                {
+                    heroesList.get(i).setManaPoints(currentMana - manaPoints);
+                    System.out.printf("%s has successfully cast %s and now has %d MP!%n", heroName, spellName, heroesList.get(i).getManaPoints());
+                }
+                else
+                {
+                    System.out.printf("%s does not have enough MP to cast %s!%n", heroName, spellName);
+                }
+                break;
+            }
+
+        }
+        return heroesList;
+    }
+    public static List<HeroesOfCode> takeDamageOfAttacker(List<HeroesOfCode> heroesList, String heroName,  int hitDamage,  String attackerName)
+    {
+        for(int i = 0; i < heroesList.size(); i++)
+        {
+            if(heroesList.get(i).getHeroName().equals(heroName))
+            {
+                int currentHit = heroesList.get(i).getHitPoints();
+                if(currentHit > hitDamage)
+                {
+                    currentHit -= hitDamage;
+                    heroesList.get(i).setHitPoints(currentHit);
+                    System.out.printf("%s was hit for %d HP by %s and now has %d HP left!%n",
+                            heroName, hitDamage, attackerName, currentHit);
+                }
+                else
+                {
+                    heroesList.remove(i);
+                    System.out.printf("%s has been killed by %s!%n", heroName, attackerName);
+                }
+                break;
+            }
+        }
+        return heroesList;
+    }
+    public static List<HeroesOfCode> rechargeManaPoints(List<HeroesOfCode> heroesList, String heroName, int amountMana)
+    {
+        for(int i = 0; i < heroesList.size(); i++)
+        {
+            if(heroesList.get(i).getHeroName().equals(heroName))
+            {
+                int currentMana = heroesList.get(i).getManaPoints();
+                if(currentMana + amountMana > 200)
+                {
+                    amountMana = 200 - currentMana;
+                }
+                heroesList.get(i).setManaPoints(currentMana + amountMana);
+                System.out.printf("%s recharged for %d MP!%n", heroName, amountMana);
+                break;
+            }
+
+        }
+        return heroesList;
+    }
+    public static List<HeroesOfCode> healHitPoints(List<HeroesOfCode> heroesList, String heroName, int amountHit)
+    {
+        for(int i = 0; i < heroesList.size(); i++)
+        {
+            if(heroesList.get(i).getHeroName().equals(heroName))
+            {
+                int currentHit = heroesList.get(i).getHitPoints();
+                if(currentHit + amountHit > 100)
+                {
+                    amountHit = 100 - currentHit;
+                }
+                heroesList.get(i).setHitPoints(currentHit + amountHit);
+                System.out.printf("%s healed for %d HP!%n", heroName, amountHit);
+                break;
+            }
+
+        }
+        return heroesList;
+    }
+    public static void printFinalState(List<HeroesOfCode> heroesList)
+    {
+        for(HeroesOfCode hero : heroesList)
+        {
+            System.out.println(hero.getHeroName());
+            System.out.printf("  HP: %d%n", hero.getHitPoints());
+            System.out.printf("  MP: %d%n", hero.getManaPoints());
+        }
+    }
+}
+class HeroesOfCode
+{
+
+    private String heroName;
+    private int hitPoints;
+    private int manaPoints;
+
+    HeroesOfCode(String heroName, int hitPoints, int manaPoints) {
+        this.heroName = heroName;
+        this.hitPoints = hitPoints;
+        this.manaPoints = manaPoints;
+    }
+
+    public String getHeroName() {
+        return heroName;
+    }
+
+    public void setHeroName(String heroName) {
+        this.heroName = heroName;
+    }
+
+    public int getHitPoints() {
+        return hitPoints;
+    }
+
+    public void setHitPoints(int hotPoints) {
+        this.hitPoints = hotPoints;
+    }
+
+    public int getManaPoints() {
+        return manaPoints;
+    }
+
+    public void setManaPoints(int manaPoints) {
+        this.manaPoints = manaPoints;
+    }
+}
