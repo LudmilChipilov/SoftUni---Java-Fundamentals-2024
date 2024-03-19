@@ -1,0 +1,163 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _03_Pirates
+{
+    public static void main(String[] args)
+    {
+        List<PirateExam> piratesList = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        String command1 = scanner.nextLine();
+        while(!command1.equals("Sail"))
+        {
+            String[] comArgs1 = command1.split("[|]{2}");
+            piratesList = createNewPirate(comArgs1, piratesList);
+            command1 = scanner.nextLine();
+        }
+        String command2 = scanner.nextLine();
+        while(!command2.equals("End"))
+        {
+            String[] comArgs2 = command2.split("=>");
+            String first = comArgs2[0];
+            if(first.equals("Plunder"))
+            {
+               piratesList = plunderExistingCity(comArgs2, piratesList);
+            }
+            else if(first.equals("Prosper"))
+            {
+               piratesList = prosperExistingCity(comArgs2, piratesList);
+            }
+            command2 = scanner.nextLine();
+        }
+        printFinalState(piratesList);
+    }
+    public static List<PirateExam> createNewPirate(String[] comArgs1, List<PirateExam> piratesList)
+    {
+        boolean isExisting = false;
+        String city = comArgs1[0];
+        int population = Integer.parseInt(comArgs1[1]);
+        int gold = Integer.parseInt(comArgs1[2]);
+        for(int i = 0; i < piratesList.size(); i++)
+        {
+            if(piratesList.get(i).getCity().equals(city))
+            {
+                int currentPopulation = population + piratesList.get(i).getPopulation();
+                int currentGold = gold + piratesList.get(i).getGold();
+                piratesList.get(i).setPopulation(currentPopulation);
+                piratesList.get(i).setGold(currentGold);
+                isExisting = true;
+                break;
+            }
+        }
+        if(!isExisting)
+        {
+            PirateExam pirateExam = new PirateExam(city, population, gold);
+            piratesList.add(pirateExam);
+        }
+
+        return piratesList;
+    }
+    public static List<PirateExam> plunderExistingCity(String[] comArgs2, List<PirateExam> piratesList)
+    {
+        //Plunder=>{town}=>{people}=>{gold}
+        String city = comArgs2[1];
+        int people = Integer.parseInt(comArgs2[2]);
+        int gold = Integer.parseInt(comArgs2[3]);
+        for(int i = 0; i < piratesList.size(); i++)
+        {
+            if(piratesList.get(i).getCity().equals(city))
+            {
+                int currentPeople = piratesList.get(i).getPopulation();
+                int currentGold = piratesList.get(i).getGold();
+                piratesList.get(i).setPopulation(currentPeople - people);
+                piratesList.get(i).setGold(currentGold - gold);
+                System.out.printf("%s plundered! %d gold stolen, %d citizens killed.%n", city, gold, people);
+                if(piratesList.get(i).getGold() <= 0 || piratesList.get(i).getPopulation() <= 0)
+                {
+                    piratesList.remove(i);
+                    System.out.printf("%s has been wiped off the map!%n", city);
+                }
+                break;
+            }
+        }
+        return piratesList;
+    }
+    public static List<PirateExam> prosperExistingCity(String[] comArgs2, List<PirateExam> piratesList)
+    {
+        //Prosper=>{town}=>{gold}"
+        String city = comArgs2[1];
+        int gold = Integer.parseInt(comArgs2[2]);
+        if(gold < 0)
+        {
+            System.out.println("Gold added cannot be a negative number!");
+            return piratesList;
+        }
+        for(int i = 0; i < piratesList.size(); i++)
+        {
+            if(piratesList.get(i).getCity().equals(city))
+            {
+
+                int currentGold = piratesList.get(i).getGold();
+
+                piratesList.get(i).setGold(currentGold + gold);
+                System.out.printf("%d gold added to the city treasury. %s now has %d gold.%n",
+                        gold, city, piratesList.get(i).getGold());
+
+                break;
+            }
+        }
+        return piratesList;
+    }
+    public static void printFinalState(List<PirateExam> piratesList)
+    {
+        if(piratesList.size() > 0)
+        {
+            System.out.printf("Ahoy, Captain! There are %d wealthy settlements to go to:%n", piratesList.size());
+            for(PirateExam pirat : piratesList)
+            {
+                System.out.printf("%s -> Population: %d citizens, Gold: %d kg%n", pirat.getCity(), pirat.getPopulation(), pirat.getGold());
+            }
+        }
+        else
+        {
+            System.out.println("Ahoy, Captain! All targets have been plundered and destroyed!");
+        }
+    }
+}
+class PirateExam
+{
+    private String city;
+    private int population;
+    private int gold;
+
+    PirateExam(String city, int population, int gold) {
+        this.city = city;
+        this.population = population;
+        this.gold = gold;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(int population) {
+        this.population = population;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+}
