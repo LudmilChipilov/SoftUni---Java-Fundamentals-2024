@@ -1,0 +1,92 @@
+import java.util.Scanner;
+
+public class _01_Activation_Keys
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        String command = scanner.nextLine();
+        while(!command.equals("Generate"))
+        {
+            String[] comArgs = command.split(">>>");
+            String first = comArgs[0];
+            if(first.equals("Contains"))
+            {
+                String substring = comArgs[1];
+                inputContainsSubstring(input, substring);
+            }
+            else if(first.equals("Flip"))
+            {
+                String upperLower = comArgs[1];
+                int startIndex = Integer.parseInt(comArgs[2]);
+                int endIndex = Integer.parseInt(comArgs[3]);
+                input = flipSubstringToUpperOrLower(input, upperLower, startIndex, endIndex);
+            }
+            else if(first.equals("Slice"))
+            {
+                int startIndex = Integer.parseInt(comArgs[1]);
+                int endIndex = Integer.parseInt(comArgs[2]);
+                input = sliceDeleteInputBetweenStartEndIndex(input, startIndex, endIndex);
+            }
+
+            command = scanner.nextLine();
+        }
+        System.out.println("Your activation key is: " + input);
+    }
+    public static void inputContainsSubstring(String input, String substring)
+    {
+        if(input.contains(substring))
+        {
+            System.out.printf("%s contains %s%n", input, substring);
+        }
+        else
+        {
+            System.out.println("Substring not found!");
+        }
+    }
+    public static String flipSubstringToUpperOrLower(String input, String upperLower,  int startIndex, int endIndex)
+    {
+        String result = "";
+        for(int i = 0; i < input.length(); i++)
+        {
+            char ch = input.charAt(i);
+            if(i >= startIndex && i < endIndex)
+            {
+
+                if(upperLower.equals("Upper"))
+                {
+                    result += String.valueOf(ch).toUpperCase();
+
+                }
+                else if(upperLower.equals("Lower"))
+                {
+                    result += String.valueOf(ch).toLowerCase();
+
+                }
+            }
+            else
+            {
+                result += String.valueOf(ch);
+            }
+
+        }
+
+        input = result;
+
+        System.out.println(input);
+
+        return input;
+    }
+    public static String sliceDeleteInputBetweenStartEndIndex(String input, int startIndex, int endIndex)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb = new StringBuilder(input);
+        sb.replace(startIndex, endIndex, "");
+        sb.trimToSize();
+        input = sb.toString();
+        sb.setLength(0);
+        System.out.println(input);
+        return input;
+    }
+}
