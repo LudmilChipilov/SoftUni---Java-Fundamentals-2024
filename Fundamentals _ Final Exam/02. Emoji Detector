@@ -1,0 +1,74 @@
+import java.math.BigInteger;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class _02_Emoji_Detector
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        LinkedHashMap<String, String> emojies = new LinkedHashMap<>();
+        emojies = findEmojiesMatches(input, emojies);
+        long coldValue = 1;
+        coldValue = findColdValue(input, coldValue);
+        compareEmojiAndColdAndPrint(emojies, coldValue);
+    }
+    public static LinkedHashMap<String, String> findEmojiesMatches(String input, LinkedHashMap<String, String> emojies)
+    {
+        final String regex = "(?<sep>[:]{2}|[*]{2})(?<name>[A-Z][a-z]{2,})\\k<sep>";
+        final String string = input;
+
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(string);
+
+        while (matcher.find())
+        {
+           String name = matcher.group("name");
+           String separator = matcher.group("sep");
+           emojies.put(name, separator);
+        }
+        return emojies;
+    }
+    public static  Long findColdValue(String input,  long coldValue)
+    {
+        final String regex = "(?<digit>[\\d])";
+        final String string = input;
+
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(string);
+
+        while (matcher.find())
+        {
+           int digit = Integer.parseInt(matcher.group("digit"));
+            coldValue *= digit;
+        }
+        return coldValue;
+    }
+    public static void compareEmojiAndColdAndPrint(LinkedHashMap<String, String> emojies, long coldValue)
+    {
+        List<String> finalList = new ArrayList<>();
+        for (Map.Entry<String, String> entry : emojies.entrySet())
+        {
+            String current = entry.getKey();
+            int sumSymbols = 0;
+            for(int i = 0; i < current.length(); i++)
+            {
+                char ch = current.charAt(i);
+                sumSymbols += (int)ch;
+            }
+            if(sumSymbols > coldValue)
+            {
+                String curr = entry.getValue() + current + entry.getValue();
+                finalList.add(curr);
+            }
+        }
+        System.out.printf("Cool threshold: %d%n", coldValue);
+        System.out.printf("%d emojis found in the text. The cool ones are:%n", emojies.size());
+        for(String list : finalList)
+        {
+            System.out.println(list);
+        }
+    }
+}
