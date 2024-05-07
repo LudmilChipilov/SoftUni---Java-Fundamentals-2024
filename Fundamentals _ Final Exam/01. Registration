@@ -1,0 +1,84 @@
+import java.util.Scanner;
+
+public class _01_Registration
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input  = scanner.nextLine();
+        String command = scanner.nextLine();
+        while(!command.equals("Registration"))
+        {
+            String[] comArgs = command.split("\\s+");
+            String first = comArgs[0];
+            if(first.equals("Letters"))
+            {
+                String upperOrLower = comArgs[1];
+                input = checkInputForLowerOrUpperCase(input, upperOrLower);
+                System.out.println(input);
+            }
+            else if(first.equals("Reverse"))
+            {
+                reverseSubstringFromInputAndPrint(input, comArgs);
+            }
+            else if(first.equals("Substring"))
+            {
+                String substring = comArgs[1];
+                if(input.contains(substring))
+                {
+                    input = input.replace(substring, "");
+                    System.out.println(input);
+                }
+                else
+                {
+                    System.out.printf("The username %s doesn't contain %s.%n", input, substring);
+                }
+            }
+            else if(first.equals("Replace"))
+            {
+                String ch = comArgs[1];
+                input = input.replace(ch, "-");
+                System.out.println(input);
+            }
+            else if(first.equals("IsValid"))
+            {
+                String ch = comArgs[1];
+                if(input.contains(ch))
+                {
+                    System.out.println("Valid username.");
+                }
+                else
+                {
+                    System.out.printf("%s must be contained in your username.%n", ch);
+                }
+            }
+            command = scanner.nextLine();
+        }
+    }
+    public static String checkInputForLowerOrUpperCase(String input,  String upperOrLower)
+    {
+        if(upperOrLower.equals("Lower"))
+        {
+            input = input.toLowerCase();
+        }
+        else if(upperOrLower.equals("Upper"))
+        {
+            input = input.toUpperCase();
+        }
+        return input;
+    }
+    public static void reverseSubstringFromInputAndPrint(String input,  String[] comArgs)
+    {
+        int startIndex = Integer.parseInt(comArgs[1]);
+        int endIndex = Integer.parseInt(comArgs[2]);
+        if(startIndex >= 0 && endIndex < input.length() && startIndex < endIndex)
+        {
+            String substring = input.substring(startIndex, endIndex + 1);
+            StringBuilder sb = new StringBuilder();
+            sb.append(substring);
+            sb.reverse().trimToSize();
+            System.out.println(sb.toString());
+        }
+
+    }
+}
