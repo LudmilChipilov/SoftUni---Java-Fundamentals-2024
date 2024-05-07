@@ -1,0 +1,76 @@
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.TreeMap;
+
+public class _03_Bakery_Shop
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, Integer> foods = new LinkedHashMap<>();
+        int totalSell = 0;
+        String command = scanner.nextLine();
+        while(!command.equals("Complete"))
+        {
+            String[] comArgs = command.split(" ");
+            String first = comArgs[0];
+            int quantity = Integer.parseInt(comArgs[1]);
+            String food = comArgs[2];
+            if(first.equals("Receive"))
+            {
+                quantity = Integer.parseInt(comArgs[1]);
+                if(quantity > 0)
+                {
+                    foods = receiveFoodAndQuantity(foods, comArgs);
+                }
+            }
+            else if(first.equals("Sell"))
+            {
+                quantity = Integer.parseInt(comArgs[1]);
+                food = comArgs[2];
+                if(!foods.containsKey(food))
+                {
+                    System.out.printf("You do not have any %s.%n", food);
+
+                }
+                else if(foods.get(food) < quantity)
+                {
+                    System.out.printf("There aren't enough %s. You sold the last %d of them.%n", food, foods.get(food));
+                    totalSell += foods.get(food);
+                    foods.remove(food);
+                }
+                else if(foods.get(food) >= quantity)
+                {
+                    foods.put(food, foods.get(food) - quantity);
+                    totalSell += quantity;
+                    System.out.printf("You sold %d %s.%n", quantity, food);
+                }
+            }
+            command = scanner.nextLine();
+        }
+        printFinalState(foods, totalSell);
+    }
+    public static  Map<String, Integer> receiveFoodAndQuantity(Map<String, Integer> foods,  String[] comArgs)
+    {
+        int quantity = Integer.parseInt(comArgs[1]);
+        String food = comArgs[2];
+        if(!foods.containsKey(food))
+        {
+            foods.put(food, 0);
+        }
+        foods.put(food, foods.get(food) + quantity);
+        return foods;
+    }
+    public static void printFinalState(Map<String, Integer> foods, int totalSell)
+    {
+        for(String key : foods.keySet())
+        {
+            if(foods.get(key) > 0)
+            {
+                System.out.printf("%s: %d%n", key, foods.get(key));
+            }
+        }
+        System.out.printf("All sold: %d goods%n", totalSell);
+    }
+}
