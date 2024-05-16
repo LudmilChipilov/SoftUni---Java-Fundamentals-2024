@@ -1,0 +1,94 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+
+public class _08_Anonymous_Threat
+{
+    public static void main(String[] args)
+    {
+         Scanner scanner = new Scanner(System.in);
+         List<String> items = Arrays.stream(scanner.nextLine().split(" "))
+                 .collect(Collectors.toList());
+         String command = scanner.nextLine();
+         while(!command.equals("3:1"))
+         {
+             String[] comArgs = command.split(" ");
+             String first = comArgs[0];
+             if(first.equals("merge"))
+             {
+                 items = mergeItemsList(items, comArgs);
+             }
+             else if(first.equals("divide"))
+             {
+                 items = divideItemsList(items, comArgs);
+             }
+             command = scanner.nextLine();
+         }
+         System.out.println(String.join(" ", items));
+    }
+    public static  List<String> mergeItemsList( List<String> items, String[] comArgs)
+    {
+        int startIndex = Integer.parseInt(comArgs[1]);
+        int endIndex = Integer.parseInt(comArgs[2]);
+        if(startIndex < 0)
+        {
+            startIndex = 0;
+        }
+        if(endIndex > items.size() - 1)
+        {
+            endIndex = items.size() - 1;
+        }
+        for(int i = startIndex + 1; i <= endIndex; i++)
+        {
+            items.set(startIndex, items.get(startIndex) + items.get(i));
+            items.remove(i);
+            i--;
+            endIndex--;
+        }
+        return items;
+    }
+    public static  List<String> divideItemsList( List<String> items, String[] comArgs)
+    {
+        int index = Integer.parseInt(comArgs[1]);
+        int partitions = Integer.parseInt(comArgs[2]);
+        if(index < 0 || index > items.size() - 1)
+        {
+            return items;
+        }
+        String currentItem = items.get(index);
+        List<String> itemsByPartitions = new ArrayList<>();
+        for(int i = 0; i < index; i++)
+        {
+            itemsByPartitions.add(items.get(i));
+        }
+        int dividedLength = currentItem.length() / partitions;
+        String sub = null;
+        for(int i = 0; i < partitions; i++)
+        {
+
+            if(i == partitions - 1)
+            {
+                sub = currentItem.substring(0);
+            }
+            else
+            {
+                sub = currentItem.substring(0, dividedLength);
+            }
+
+            itemsByPartitions.add(sub);
+            sub = null;
+            currentItem = currentItem.substring(dividedLength);
+        }
+        items.remove(index);
+        for(int i = index; i < items.size(); i++)
+        {
+            itemsByPartitions.add(items.get(i));
+        }
+
+
+        return itemsByPartitions;
+    }
+}
