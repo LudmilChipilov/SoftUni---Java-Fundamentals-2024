@@ -1,0 +1,105 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class _10_SoftUni_Course_Planning
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<String> items = (ArrayList<String>) Arrays.stream(scanner.nextLine().split(", "))
+                .collect(Collectors.toList());
+
+
+        String input = scanner.nextLine();
+        while(!input.equals("course start"))
+        {
+            String[] comArgs = input.split(":");
+            String command = comArgs[0];
+            String lessonTitle = comArgs[1];
+            if(command.equals("Add"))
+            {
+                if(!items.contains(lessonTitle))
+                {
+                    items.add(lessonTitle);
+                }
+            }
+            else if(command.equals("Insert"))
+            {
+
+                int index = Integer.parseInt(comArgs[2]);
+                if(index < 0 || index > items.size() - 1)
+                {
+                    continue;
+                }
+                if(!items.contains(lessonTitle))
+                {
+                    items.add(index, lessonTitle);
+                }
+
+            }
+            else if(command.equals("Remove"))
+            {
+                items.remove(lessonTitle);
+                items.remove(lessonTitle + "-Exercise");
+            }
+            else if(command.equals("Swap"))
+            {
+                String secondLessonTitle = comArgs[2];
+                if(items.contains(lessonTitle) && items.contains(secondLessonTitle))
+                {
+                    int index1 = items.indexOf(lessonTitle);
+                    int index2 = items.indexOf(secondLessonTitle);
+                    Collections.swap(items, index1, index2);
+                    if(items.contains(lessonTitle))
+                    {
+                        items = checkForExercise(items, lessonTitle);
+                    }
+                    if(items.contains(secondLessonTitle))
+                    {
+                        items = checkForExercise(items, secondLessonTitle);
+                    }
+
+                }
+            }
+            else if(command.equals("Exercise"))
+            {
+                if(items.contains(lessonTitle))
+                {
+                    int index = items.indexOf(lessonTitle);
+                    if(!items.contains(lessonTitle + "-Exercise"))
+                    {
+                        items.add(index + 1, lessonTitle + "-Exercise");
+                    }
+                }
+                else
+                {
+                    items.add(lessonTitle);
+                    items.add(lessonTitle + "-Exercise");
+                }
+            }
+            input = scanner.nextLine();
+        }
+        printFinalState(items);
+    }
+    public static  ArrayList<String> checkForExercise(ArrayList<String> items, String lessonTitle)
+    {
+        int index = items.indexOf(lessonTitle);
+        int indexOfEx = items.indexOf(lessonTitle + "-Exercise");
+        if(indexOfEx < 0)
+        {
+            return items;
+        }
+        items.remove(lessonTitle + "-Exercise");
+        items.add(index + 1, lessonTitle + "-Exercise");
+        return items;
+    }
+     public static void printFinalState(ArrayList<String> items)
+     {
+         for(int i = 0; i < items.size(); i++)
+         {
+             System.out.printf("%d.%s%n", i+ 1, items.get(i));
+         }
+     }
+}
